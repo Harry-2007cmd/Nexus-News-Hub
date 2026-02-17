@@ -3,161 +3,165 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - Nexus News</title>
+    <title>Login / Sign Up - Nexus News Hub</title>
     <link rel="stylesheet" href="Assets/css/login.css">
 </head>
 <body>
     <!-- Header -->
-    <header>
-        <div class="header-content">
-            <div class="logo-section">
-                <a href="nexus-news.html" class="logo">
-                    NEXUS<span>NEWS</span>
-                </a>
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <h1>Nexus News Hub</h1>
+                <p class="tagline">TRUTH MATTERS</p>
             </div>
+            <nav class="nav">
+                <a href="index.html">Home</a>
+                <a href="#">Politics</a>
+                <a href="#">Business</a>
+                <a href="#">Technology</a>
+                <a href="#">Sports</a>
+                <a href="#">Entertainment</a>
+                <a href="#">World</a>
+                <a href="#">Health</a>
+            </nav>
         </div>
     </header>
 
-    <!-- Main Login Container -->
-    <div class="login-container">
-        <div class="login-box">
-            <div class="login-header">
-                <h1 class="login-title">Welcome Back!</h1>
-                <p class="login-subtitle">Sign in to continue to Nexus News</p>
-            </div>
-
-            <form class="login-form" id="loginForm">
-                <!-- Email Field -->
-                <div class="form-group">
-                    <label for="email" class="form-label">Email Address</label>
-                    <input 
-                        type="email" 
-                        id="email" 
-                        name="email" 
-                        class="form-input" 
-                        placeholder="Enter your email"
-                        required
-                    >
-                </div>
-
-                <!-- Password Field -->
-                <div class="form-group">
-                    <label for="password" class="form-label">Password</label>
-                    <div class="password-wrapper">
-                        <input 
-                            type="password" 
-                            id="password" 
-                            name="password" 
-                            class="form-input" 
-                            placeholder="Enter your password"
-                            required
-                        >
-                        <button type="button" class="password-toggle" id="togglePassword">
-                            👁️ Show
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Remember Me & Forgot Password -->
-                <div class="form-options">
-                    <div class="remember-me">
-                        <input type="checkbox" id="remember" name="remember">
-                        <label for="remember">Remember me</label>
-                    </div>
-                    <a href="#forgot" class="forgot-password">Forgot Password?</a>
-                </div>
-
-                <!-- Login Button -->
-                <button type="submit" class="login-btn">Login</button>
-            </form>
-
-            <!-- Divider -->
-            <div class="divider">
-                <span>OR</span>
-            </div>
-
-            <!-- Social Login Options -->
-            <div class="social-login">
-                <button class="social-btn" id="googleLogin">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-                       
-                    </svg>
-                    Continue with Google
-                </button>
+    <!-- Auth Container -->
+    <div class="auth-container">
+        <div class="auth-wrapper">
+            <!-- Login Form -->
+            <div class="auth-box" id="loginBox">
+                <h2>Welcome Back</h2>
+                <p class="subtitle">Login to access your personalized news feed</p>
                 
-                <button class="social-btn" id="facebookLogin">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="#1877F2">
-                        <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
-                    </svg>
-                    Continue with Facebook
-                </button>
-
-                <button class="social-btn" id="appleLogin">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="#000000">
-                        <path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09l.01-.01zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/>
-                    </svg>
-                    Continue with Apple
-                </button>
+                <form id="loginForm" class="auth-form">
+                    <div class="form-group">
+                        <label for="loginEmail">Email Address</label>
+                        <input type="email" id="loginEmail" placeholder="Enter your email" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="loginPassword">Password</label>
+                        <input type="password" id="loginPassword" placeholder="Enter your password" required>
+                    </div>
+                    
+                    <div class="form-options">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="rememberMe">
+                            <span>Remember me</span>
+                        </label>
+                        <a href="#" class="forgot-password">Forgot Password?</a>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary">Login</button>
+                    
+                    <div class="divider">
+                        <span>OR</span>
+                    </div>
+                    
+                    <button type="button" class="btn btn-social btn-google">
+                        <svg width="18" height="18" viewBox="0 0 18 18">
+                            <path fill="#4285F4" d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.717v2.258h2.908c1.702-1.567 2.684-3.874 2.684-6.615z"/>
+                            <path fill="#34A853" d="M9 18c2.43 0 4.467-.806 5.956-2.184l-2.908-2.258c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332C2.438 15.983 5.482 18 9 18z"/>
+                            <path fill="#FBBC05" d="M3.964 10.707c-.18-.54-.282-1.117-.282-1.707 0-.593.102-1.17.282-1.709V4.958H.957C.347 6.173 0 7.548 0 9c0 1.452.348 2.827.957 4.042l3.007-2.335z"/>
+                            <path fill="#EA4335" d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0 5.482 0 2.438 2.017.957 4.958L3.964 7.29C4.672 5.163 6.656 3.58 9 3.58z"/>
+                        </svg>
+                        Continue with Google
+                    </button>
+                    
+                    <button type="button" class="btn btn-social btn-facebook">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="#1877F2">
+                            <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                        </svg>
+                        Continue with Facebook
+                    </button>
+                </form>
+                
+                <p class="switch-form">
+                    Don't have an account? <a href="#" id="showSignup">Sign Up</a>
+                </p>
             </div>
 
-            <!-- Sign Up Link -->
-            <div class="signup-link">
-                Don't have an account? <a href="#signup">Sign up now</a>
+            <!-- Sign Up Form -->
+            <div class="auth-box hidden" id="signupBox">
+                <h2>Create Account</h2>
+                <p class="subtitle">Join Nexus News Hub for personalized news</p>
+                
+                <form id="signupForm" class="auth-form">
+                    <div class="form-group">
+                        <label for="signupName">Full Name</label>
+                        <input type="text" id="signupName" placeholder="Enter your full name" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="signupEmail">Email Address</label>
+                        <input type="email" id="signupEmail" placeholder="Enter your email" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="signupPassword">Password</label>
+                        <input type="password" id="signupPassword" placeholder="Create a password" required>
+                        <small class="password-hint">At least 8 characters with a mix of letters and numbers</small>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="confirmPassword">Confirm Password</label>
+                        <input type="password" id="confirmPassword" placeholder="Re-enter your password" required>
+                    </div>
+                    
+                    <div class="form-options">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="agreeTerms" required>
+                            <span>I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a></span>
+                        </label>
+                    </div>
+                    
+                    <div class="form-options">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="newsletter">
+                            <span>Subscribe to newsletter for daily news updates</span>
+                        </label>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary">Sign Up</button>
+                    
+                    <div class="divider">
+                        <span>OR</span>
+                    </div>
+                    
+                    <button type="button" class="btn btn-social btn-google">
+                        <svg width="18" height="18" viewBox="0 0 18 18">
+                            <path fill="#4285F4" d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.717v2.258h2.908c1.702-1.567 2.684-3.874 2.684-6.615z"/>
+                            <path fill="#34A853" d="M9 18c2.43 0 4.467-.806 5.956-2.184l-2.908-2.258c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332C2.438 15.983 5.482 18 9 18z"/>
+                            <path fill="#FBBC05" d="M3.964 10.707c-.18-.54-.282-1.117-.282-1.707 0-.593.102-1.17.282-1.709V4.958H.957C.347 6.173 0 7.548 0 9c0 1.452.348 2.827.957 4.042l3.007-2.335z"/>
+                            <path fill="#EA4335" d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0 5.482 0 2.438 2.017.957 4.958L3.964 7.29C4.672 5.163 6.656 3.58 9 3.58z"/>
+                        </svg>
+                        Continue with Google
+                    </button>
+                    
+                    <button type="button" class="btn btn-social btn-facebook">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="#1877F2">
+                            <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                        </svg>
+                        Continue with Facebook
+                    </button>
+                </form>
+                
+                <p class="switch-form">
+                    Already have an account? <a href="#" id="showLogin">Login</a>
+                </p>
             </div>
         </div>
     </div>
 
     <!-- Footer -->
-    <footer>
-        <div class="footer-content">
-            © 2026 Nexus News. All rights reserved.
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2024 Nexus News Hub. All rights reserved. | <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a></p>
         </div>
     </footer>
 
-    <!-- JavaScript for Password Toggle and Form Handling -->
-    <script>
-        // Password Toggle Functionality
-        const togglePassword = document.getElementById('togglePassword');
-        const passwordInput = document.getElementById('password');
-
-        togglePassword.addEventListener('click', function() {
-            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
-            passwordInput.setAttribute('type', type);
-            this.textContent = type === 'password' ? '👁️ Show' : '🙈 Hide';
-        });
-
-        // Form Submission Handler
-        const loginForm = document.getElementById('loginForm');
-        loginForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-            const remember = document.getElementById('remember').checked;
-
-            // Basic validation
-            if (email && password) {
-                // Here you would typically send this to a server
-                console.log('Login attempt:', { email, password, remember });
-                alert('Login functionality would be connected to your backend server.');
-                
-                // For demo purposes, redirect to homepage
-                // window.location.href = 'nexus-news.html';
-            }
-        });
-
-        // Social Login Handlers
-        document.getElementById('googleLogin').addEventListener('click', function() {
-            alert('Google login would be integrated with Google OAuth');
-        });
-
-        document.getElementById('facebookLogin').addEventListener('click', function() {
-            alert('Facebook login would be integrated with Facebook OAuth');
-        });
-
-        document.getElementById('appleLogin').addEventListener('click', function() {
-            alert('Apple login would be integrated with Apple Sign In');
-        });
-    </script>
+    <script src="Assets/js/login.js"></script>
 </body>
 </html>
