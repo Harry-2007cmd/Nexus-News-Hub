@@ -1,339 +1,219 @@
-// Theme Toggle Functionality
-const themeToggle = document.getElementById('themeToggle');
-const htmlElement = document.documentElement;
+// ===============================
+// CONFIG (newsdata.io)
+// ===============================
+const API_KEY = "pub_85f5b9939ead4fbe89849263f29b69e7";
+const BASE_URL = `https://newsdata.io/api/1/news?apikey=${API_KEY}&country=in&language=en`;
 
-// Check for saved theme preference or default to 'light'
-const currentTheme = localStorage.getItem('theme') || 'light';
-htmlElement.setAttribute('data-theme', currentTheme);
+// ===============================
+// DOM ELEMENTS
+// ===============================
+const ticker        = document.getElementById("ticker");
+const trendingList  = document.getElementById("trendingList");
+const heroImage     = document.getElementById("heroImage");
+const heroTitle     = document.getElementById("heroTitle");
+const heroExcerpt   = document.getElementById("heroExcerpt");
+const heroCategory  = document.getElementById("heroCategory");
+const heroLink      = document.getElementById("heroLink");
+const secondaryNews = document.getElementById("secondaryNews");
+const newsGrid      = document.getElementById("newsGrid");
 
-themeToggle.addEventListener('click', () => {
-    const currentTheme = htmlElement.getAttribute('data-theme');
-    const newTheme = currentTheme === 'light' ? 'dark' : 'light';
-    
-    htmlElement.setAttribute('data-theme', newTheme);
-    localStorage.setItem('theme', newTheme);
-    
-    // Add rotation animation
-    themeToggle.style.transform = 'rotate(360deg)';
-    setTimeout(() => {
-        themeToggle.style.transform = 'rotate(0deg)';
-    }, 300);
-});
+// Fallback placeholder
+const PLACEHOLDER = "https://placehold.co/600x400/e5e5e5/aaa?text=No+Image";
 
-// Infinite Scroll Functionality
-let page = 1;
-let isLoading = false;
-const newsGrid = document.getElementById('newsGrid');
-const loadingIndicator = document.getElementById('loadingIndicator');
+function safeImg(url) {
+  return url && url.startsWith("http") ? url : PLACEHOLDER;
+}
 
-// Sample news data for infinite scroll
-const newsCategories = ['Technology', 'Sports', 'Business', 'Health', 'Science', 'Environment', 'Entertainment', 'World'];
-const newsImages = [
-    'https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=600&h=400&fit=crop',
-    'https://images.unsplash.com/photo-1495020689067-958852a7765e?w=600&h=400&fit=crop',
-    'https://images.unsplash.com/photo-1461896836934-ffe607ba8211?w=600&h=400&fit=crop',
-    'https://images.unsplash.com/photo-1444653614773-995cb1ef9efa?w=600&h=400&fit=crop',
-    'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=600&h=400&fit=crop',
-    'https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=600&h=400&fit=crop',
-    'https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?w=600&h=400&fit=crop',
-    'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600&h=400&fit=crop'
-];
+function timeAgo(dateStr) {
+  if (!dateStr) return "";
+  const diff = Math.floor((Date.now() - new Date(dateStr)) / 60000);
+  if (diff < 1)  return "Just now";
+  if (diff < 60) return `${diff} min ago`;
+  if (diff < 1440) return `${Math.floor(diff / 60)} hours ago`;
+  return `${Math.floor(diff / 1440)} days ago`;
+}
 
-const newsTitles = [
-    'Breaking: Major Economic Reform Announced',
-    'Innovation Summit Attracts Global Leaders',
-    'Championship Finals Set Record Viewership',
-    'New Research Reveals Groundbreaking Findings',
-    'International Cooperation on Climate Action',
-    'Tech Giants Unveil Next-Generation Products',
-    'Healthcare System Receives Major Upgrade',
-    'Cultural Festival Celebrates Diversity',
-    'Education Initiative Transforms Learning',
-    'Infrastructure Project Nears Completion',
-    'Diplomatic Talks Yield Positive Results',
-    'Entertainment Industry Breaks New Ground',
-    'Scientific Discovery Opens New Possibilities',
-    'Environmental Protection Measures Announced',
-    'Financial Markets Show Strong Growth'
-];
+function capitalize(str) {
+  if (!str) return "News";
+  return str.charAt(0).toUpperCase() + str.slice(1);
+}
 
-const newsDescriptions = [
-    'Government officials outline comprehensive plans for economic development and growth in the coming fiscal year...',
-    'Industry leaders and innovators gather to discuss emerging technologies and their impact on society...',
-    'Record-breaking attendance and viewership numbers demonstrate growing interest in competitive sports...',
-    'Scientists publish peer-reviewed findings that could revolutionize our understanding of fundamental concepts...',
-    'Nations commit to collaborative efforts in addressing pressing environmental challenges and sustainability...',
-    'Latest technological innovations promise to enhance user experience and productivity across sectors...',
-    'Significant investments in healthcare infrastructure aim to improve accessibility and quality of care...',
-    'Annual celebration brings together diverse communities to share traditions and promote cultural understanding...',
-    'New educational programs leverage technology to create engaging and effective learning experiences...',
-    'Major construction milestone reached as project enters final phase of development and implementation...',
-    'High-level discussions result in agreements on key international issues and cooperative frameworks...',
-    'Creative professionals push boundaries with innovative content and immersive storytelling techniques...',
-    'Breakthrough research findings published in prestigious journal attract international scientific community...',
-    'Comprehensive environmental policies introduced to protect natural resources and biodiversity...',
-    'Economic indicators point to sustained growth and stability across multiple market sectors...'
-];
+// ===============================
+// FETCH NEWS
+// ===============================
+async function fetchNews() {
+  try {
+    const response = await fetch(BASE_URL);
+    const data = await response.json();
+    if (!data.results || !data.results.length) throw new Error("No results");
+    displayBreakingNews(data.results);
+    displayTrending(data.results);
+    displayHero(data.results);
+    displayLatest(data.results);
+  } catch (error) {
+    console.error("Fetch error:", error);
+    if (ticker) ticker.textContent = "Failed to load news. Please try again later.";
+  }
+}
 
-function generateNewsCard(index) {
-    const category = newsCategories[Math.floor(Math.random() * newsCategories.length)];
-    const image = newsImages[Math.floor(Math.random() * newsImages.length)];
-    const title = newsTitles[Math.floor(Math.random() * newsTitles.length)];
-    const description = newsDescriptions[Math.floor(Math.random() * newsDescriptions.length)];
-    const hoursAgo = Math.floor(Math.random() * 12) + 1;
-    const readTime = Math.floor(Math.random() * 5) + 3;
-    
-    return `
-        <article class="news-card">
-            <div class="card-image">
-                <img src="${image}" alt="News">
-            </div>
-            <div class="card-content">
-                <span class="card-category">${category}</span>
-                <h3>${title}</h3>
-                <p>${description}</p>
-                <div class="card-meta">
-                    <span>${hoursAgo} hours ago</span>
-                    <span>•</span>
-                    <span>${readTime} min read</span>
-                </div>
-            </div>
-        </article>
+// ===============================
+// BREAKING NEWS TICKER
+// ===============================
+function displayBreakingNews(articles) {
+  const headlines = articles
+    .slice(0, 8)
+    .map(a => a.title)
+    .join("   ⚡   ");
+  ticker.textContent = headlines || "No breaking news available.";
+}
+
+// ===============================
+// TRENDING SIDEBAR
+// ===============================
+function displayTrending(articles) {
+  trendingList.innerHTML = "";
+  articles.slice(0, 5).forEach((article, i) => {
+    const views = Math.floor(Math.random() * 10000 + 5000).toLocaleString();
+    const li = document.createElement("li");
+    li.innerHTML = `
+      <a href="${article.link}" target="_blank" rel="noopener">
+        <div>
+          <div style="font-weight:700; font-family:Arial,sans-serif; font-size:0.88rem; color:var(--text-primary); line-height:1.4; margin-bottom:3px;">${article.title}</div>
+          <div style="font-size:0.75rem; color:var(--text-muted); font-family:Arial,sans-serif;">${views} views</div>
+        </div>
+      </a>
     `;
+    trendingList.appendChild(li);
+  });
 }
 
-function loadMoreNews() {
-    if (isLoading) return;
-    
-    isLoading = true;
-    loadingIndicator.classList.add('show');
-    
-    // Simulate API call delay
-    setTimeout(() => {
-        const newsArticles = document.querySelector('.news-articles');
-        
-        // Add 6 new cards
-        for (let i = 0; i < 6; i++) {
-            const cardHTML = generateNewsCard(page * 6 + i);
-            newsArticles.insertAdjacentHTML('beforeend', cardHTML);
-        }
-        
-        page++;
-        isLoading = false;
-        loadingIndicator.classList.remove('show');
-    }, 1000);
+// ===============================
+// HERO SECTION
+// ===============================
+function displayHero(articles) {
+  const main = articles[0];
+  if (!main) return;
+
+  heroImage.src = safeImg(main.image_url);
+  heroImage.onerror = () => { heroImage.src = PLACEHOLDER; };
+  heroTitle.textContent = main.title || "";
+  heroExcerpt.textContent = main.description || "";
+  heroCategory.textContent = capitalize(main.category?.[0] || "Top News");
+  heroLink.href = main.link || "#";
+
+  secondaryNews.innerHTML = "";
+  articles.slice(1, 4).forEach(article => {
+    const category = capitalize(article.category?.[0] || article.source_id || "News");
+    const desc = article.description || "";
+    const div = document.createElement("div");
+    div.className = "secondary-card";
+    div.innerHTML = `
+      <img src="${safeImg(article.image_url)}" alt="" loading="lazy" onerror="this.src='${PLACEHOLDER}'">
+      <span class="card-badge">${category}</span>
+      <h4>${article.title || ""}</h4>
+      ${desc ? `<p>${desc.slice(0, 80)}${desc.length > 80 ? "..." : ""}</p>` : ""}
+    `;
+    div.addEventListener("click", () => window.open(article.link, "_blank", "noopener"));
+    secondaryNews.appendChild(div);
+  });
 }
 
-// Intersection Observer for infinite scroll
-const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting && !isLoading) {
-            loadMoreNews();
-        }
-    });
-}, {
-    rootMargin: '200px'
+// ===============================
+// LATEST NEWS GRID
+// ===============================
+function displayLatest(articles) {
+  newsGrid.innerHTML = "";
+  articles.slice(4, 14).forEach(article => {
+    const category = capitalize(article.category?.[0] || article.source_id || "News");
+    const desc = article.description || "";
+    const ago = timeAgo(article.pubDate);
+    const readTime = Math.ceil((desc.split(" ").length || 50) / 200) + Math.floor(Math.random() * 3 + 2);
+
+    const card = document.createElement("div");
+    card.className = "news-card";
+    card.innerHTML = `
+      <img src="${safeImg(article.image_url)}" alt="" loading="lazy" onerror="this.src='${PLACEHOLDER}'">
+      <div class="news-card-content">
+        <span class="news-category">${category}</span>
+        <h3>${article.title || ""}</h3>
+        <p>${desc || ""}</p>
+        <div class="news-card-meta">
+          <span>${ago}</span>
+          <span class="dot"></span>
+          <span>${readTime} min read</span>
+        </div>
+      </div>
+    `;
+    card.addEventListener("click", () => window.open(article.link, "_blank", "noopener"));
+    newsGrid.appendChild(card);
+  });
+}
+
+// ===============================
+// THEME TOGGLE
+// ===============================
+const themeToggle = document.getElementById("themeToggle");
+const html = document.documentElement;
+const savedTheme = localStorage.getItem("theme") || "light";
+html.setAttribute("data-theme", savedTheme);
+
+themeToggle.addEventListener("click", () => {
+  const current = html.getAttribute("data-theme");
+  const newTheme = current === "light" ? "dark" : "light";
+  html.setAttribute("data-theme", newTheme);
+  localStorage.setItem("theme", newTheme);
 });
 
-observer.observe(loadingIndicator);
+// ===============================
+// CATEGORY NAV ACTIVE STATE
+// ===============================
+document.querySelectorAll(".category-link").forEach(link => {
+  link.addEventListener("click", e => {
+    e.preventDefault();
+    document.querySelectorAll(".category-link").forEach(l => l.classList.remove("active"));
+    link.classList.add("active");
+  });
+});
 
-// Search functionality
-const searchInput = document.querySelector('.search-input');
-searchInput.addEventListener('input', (e) => {
-    const searchTerm = e.target.value.toLowerCase();
-    
-    if (searchTerm.length > 2) {
-        // Highlight search functionality (placeholder for future implementation)
-        console.log('Searching for:', searchTerm);
+// ===============================
+// SEARCH (filter loaded articles)
+// ===============================
+const searchInput = document.querySelector(".search-input");
+let allArticles = [];
+
+const _origFetch = fetchNews;
+async function fetchNews() {
+  try {
+    const response = await fetch(BASE_URL);
+    const data = await response.json();
+    if (!data.results || !data.results.length) throw new Error("No results");
+    allArticles = data.results;
+    displayBreakingNews(allArticles);
+    displayTrending(allArticles);
+    displayHero(allArticles);
+    displayLatest(allArticles);
+  } catch (error) {
+    console.error("Fetch error:", error);
+    if (ticker) ticker.textContent = "Failed to load news. Please try again later.";
+  }
+}
+
+if (searchInput) {
+  searchInput.addEventListener("input", () => {
+    const q = searchInput.value.toLowerCase().trim();
+    if (!q || !allArticles.length) {
+      if (allArticles.length) displayLatest(allArticles);
+      return;
     }
-});
-
-// Smooth scroll for category links
-document.querySelectorAll('.category-link').forEach(link => {
-    link.addEventListener('click', (e) => {
-        e.preventDefault();
-        
-        // Remove active class from all links
-        document.querySelectorAll('.category-link').forEach(l => l.classList.remove('active'));
-        
-        // Add active class to clicked link
-        link.classList.add('active');
-        
-        // Scroll to news grid
-        const newsGrid = document.getElementById('newsGrid');
-        newsGrid.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    });
-});
-
-// Add click handlers for cards with smooth transition
-document.addEventListener('click', (e) => {
-    const card = e.target.closest('.news-card, .secondary-card, .trending-item');
-    if (card) {
-        // Add a ripple effect
-        const ripple = document.createElement('div');
-        ripple.style.position = 'absolute';
-        ripple.style.width = '20px';
-        ripple.style.height = '20px';
-        ripple.style.borderRadius = '50%';
-        ripple.style.background = 'rgba(196, 30, 58, 0.3)';
-        ripple.style.transform = 'scale(0)';
-        ripple.style.animation = 'ripple 0.6s ease-out';
-        ripple.style.pointerEvents = 'none';
-        
-        const rect = card.getBoundingClientRect();
-        ripple.style.left = e.clientX - rect.left + 'px';
-        ripple.style.top = e.clientY - rect.top + 'px';
-        
-        card.style.position = 'relative';
-        card.appendChild(ripple);
-        
-        setTimeout(() => ripple.remove(), 600);
-    }
-});
-
-// Add CSS for ripple animation
-const style = document.createElement('style');
-style.textContent = `
-    @keyframes ripple {
-        to {
-            transform: scale(20);
-            opacity: 0;
-        }
-    }
-`;
-document.head.appendChild(style);
-
-// Animate elements on scroll
-const animateOnScroll = () => {
-    const elements = document.querySelectorAll('.news-card, .hero-section, .section-title');
-    
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.style.opacity = '1';
-                entry.target.style.transform = 'translateY(0)';
-            }
-        });
-    }, {
-        threshold: 0.1
-    });
-    
-    elements.forEach(el => {
-        observer.observe(el);
-    });
-};
-
-// Initialize animations
-window.addEventListener('load', () => {
-    animateOnScroll();
-});
-
-// Breaking news ticker interaction - pause on hover
-const newsTicker = document.querySelector('.news-ticker');
-if (newsTicker) {
-    newsTicker.addEventListener('mouseenter', () => {
-        newsTicker.style.animationPlayState = 'paused';
-    });
-    
-    newsTicker.addEventListener('mouseleave', () => {
-        newsTicker.style.animationPlayState = 'running';
-    });
+    const filtered = allArticles.filter(a =>
+      (a.title || "").toLowerCase().includes(q) ||
+      (a.description || "").toLowerCase().includes(q)
+    );
+    displayLatest(filtered);
+  });
 }
 
-// Add active state to login/signup buttons
-const loginBtn = document.querySelector('.btn-secondary');
-const signupBtn = document.querySelector('.btn-primary');
-
-if (loginBtn) {
-    loginBtn.addEventListener('click', () => {
-        alert('Login functionality will be implemented here');
-    });
-}
-
-if (signupBtn) {
-    signupBtn.addEventListener('click', () => {
-        alert('Sign up functionality will be implemented here');
-    });
-}
-
-// Newsletter form submission
-const newsletterForm = document.querySelector('.newsletter-form');
-if (newsletterForm) {
-    newsletterForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        const emailInput = newsletterForm.querySelector('input[type="email"]');
-        const email = emailInput.value;
-        
-        if (email) {
-            alert('Thank you for subscribing! You will receive our latest updates.');
-            emailInput.value = '';
-        }
-    });
-    
-    // Prevent form submission on button click
-    const subscribeBtn = newsletterForm.querySelector('button');
-    subscribeBtn.addEventListener('click', (e) => {
-        e.preventDefault();
-        const emailInput = newsletterForm.querySelector('input[type="email"]');
-        const email = emailInput.value;
-        
-        if (email) {
-            alert('Thank you for subscribing! You will receive our latest updates.');
-            emailInput.value = '';
-        }
-    });
-}
-
-// Add scroll-to-top button
-const scrollToTopBtn = document.createElement('button');
-scrollToTopBtn.innerHTML = `
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <polyline points="18 15 12 9 6 15"></polyline>
-    </svg>
-`;
-scrollToTopBtn.className = 'scroll-to-top';
-scrollToTopBtn.style.cssText = `
-    position: fixed;
-    bottom: 2rem;
-    right: 2rem;
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    background: var(--primary-color);
-    color: white;
-    border: none;
-    cursor: pointer;
-    display: none;
-    align-items: center;
-    justify-content: center;
-    box-shadow: var(--shadow-lg);
-    transition: var(--transition);
-    z-index: 999;
-`;
-
-document.body.appendChild(scrollToTopBtn);
-
-window.addEventListener('scroll', () => {
-    if (window.pageYOffset > 300) {
-        scrollToTopBtn.style.display = 'flex';
-    } else {
-        scrollToTopBtn.style.display = 'none';
-    }
-});
-
-scrollToTopBtn.addEventListener('click', () => {
-    window.scrollTo({
-        top: 0,
-        behavior: 'smooth'
-    });
-});
-
-scrollToTopBtn.addEventListener('mouseenter', () => {
-    scrollToTopBtn.style.transform = 'translateY(-5px)';
-});
-
-scrollToTopBtn.addEventListener('mouseleave', () => {
-    scrollToTopBtn.style.transform = 'translateY(0)';
-});
-
-console.log('Nexus News Hub initialized successfully!');
+// ===============================
+// INIT
+// ===============================
+fetchNews();
