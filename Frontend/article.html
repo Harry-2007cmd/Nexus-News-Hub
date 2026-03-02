@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Article - Nexus News Hub</title>
+    <link rel="StyleSheet" href="Assets/css/main.css">
+    <link rel="StyleSheet" href="Assets/css/article.css">
+    <script src="https://kit.fontawesome.com/1eda1e965c.js" crossorigin="anonymous"></script>
+</head>
+<body>
+
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-left">
+                <div class="logo">
+                    <h1 onclick="window.location.href='index.html'" style="cursor:pointer;">Nexus News Hub</h1>
+                    <span class="tagline">Truth Matters</span>
+                </div>
+            </div>
+            <div class="nav-center">
+                <div class="search-container">
+                    <input type="text" class="search-input" placeholder="Search news ...">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </div>
+            </div>
+            <div class="nav-right">
+                <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+                    <svg class="sun-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <circle cx="12" cy="12" r="4"></circle>
+                        <path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32l1.41 1.41M2 12h2m16 0h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path>
+                    </svg>
+                    <svg class="moon-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                </button>
+                <button class="btn-secondary" onclick="window.location.href='login.html'">Login</button>
+                <button class="btn-primary" onclick="window.location.href='login.html'">Sign Up</button>
+            </div>
+        </div>
+        <div class="category-nav">
+            <a href="index.html" class="category-link">Home</a>
+            <a href="#" class="category-link">Politics</a>
+            <a href="#" class="category-link">Business</a>
+            <a href="#" class="category-link">Technology</a>
+            <a href="#" class="category-link">Sports</a>
+            <a href="#" class="category-link">Entertainment</a>
+            <a href="#" class="category-link">World</a>
+            <a href="#" class="category-link">Health</a>
+        </div>
+    </nav>
+
+    <!-- Article Content -->
+    <div class="article-wrapper">
+        <div class="article-container">
+
+            <!-- Breadcrumb -->
+            <nav class="breadcrumb">
+                <a href="index.html"><i class="fa-solid fa-house"></i> Home</a>
+                <span class="breadcrumb-sep">/</span>
+                <span id="articleCategoryBreadcrumb">News</span>
+            </nav>
+
+            <!-- Article Header -->
+            <header class="article-header">
+                <span class="article-category-badge" id="articleCategory">News</span>
+                <h1 class="article-title" id="articleTitle">Loading article...</h1>
+                <div class="article-meta">
+                    <div class="meta-left">
+                        <span class="meta-author"><i class="fa-solid fa-user"></i> <span id="articleSource">Unknown Source</span></span>
+                        <span class="meta-dot">•</span>
+                        <span class="meta-date"><i class="fa-regular fa-clock"></i> <span id="articleDate"></span></span>
+                        <span class="meta-dot">•</span>
+                        <span class="meta-read"><i class="fa-solid fa-book-open"></i> <span id="articleReadTime">5 min read</span></span>
+                    </div>
+                    <div class="meta-share">
+                        <span class="share-label">Share:</span>
+                        <a href="#" class="share-btn facebook" title="Share on Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+                        <a href="#" class="share-btn twitter" title="Share on Twitter"><i class="fa-brands fa-x-twitter"></i></a>
+                        <a href="#" class="share-btn whatsapp" title="Share on WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
+                        <button class="share-btn copy" id="copyLinkBtn" title="Copy link"><i class="fa-solid fa-link"></i></button>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Hero Image -->
+            <div class="article-hero-image">
+                <img id="articleImage" src="" alt="Article Image">
+                <p class="image-caption" id="articleImageCaption"></p>
+            </div>
+
+            <!-- Article Body -->
+            <div class="article-body">
+                <p class="article-lead" id="articleDescription"></p>
+                <div class="article-divider"></div>
+                <div class="article-full-content" id="articleContent"></div>
+
+                <!-- Read Full Article CTA -->
+                <div class="read-more-box">
+                    <p>This is a summary. Read the full article on the original source.</p>
+                    <a id="articleSourceLink" href="#" target="_blank" rel="noopener" class="read-full-btn">
+                        Read Full Article <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                    </a>
+                </div>
+
+                <!-- Tags -->
+                <div class="article-tags" id="articleTags"></div>
+            </div>
+
+            <!-- Back Button -->
+            <div class="back-section">
+                <button class="back-btn" onclick="history.back()">
+                    <i class="fa-solid fa-arrow-left"></i> Back to News
+                </button>
+            </div>
+
+        </div>
+
+        <!-- Sidebar -->
+        <aside class="article-sidebar">
+            <div class="sidebar-section">
+                <div class="sidebar-header">
+                    <i class="fa-brands fa-flipboard"></i>
+                    <h3>Related News</h3>
+                </div>
+                <div id="relatedNews" class="related-list">
+                    <p style="padding:16px; color:var(--text-muted); font-size:0.85rem;">Loading related news...</p>
+                </div>
+            </div>
+
+            <div class="sidebar-section ad-space" style="margin-top:0;">
+                <span class="ad-label">Advertisement</span>
+                <div class="ad-placeholder"><p>Ad Space Available</p></div>
+            </div>
+
+            <div class="sidebar-section social-links" style="margin-top:0; border:1px solid var(--border); border-radius:var(--radius); padding:18px;">
+                <h3>Follow Us</h3>
+                <div class="social-icons">
+                    <a href="#" class="social-icon facebook"><i class="fa-brands fa-facebook-f"></i></a>
+                    <a href="#" class="social-icon twitter"><i class="fa-brands fa-x-twitter"></i></a>
+                    <a href="#" class="social-icon instagram"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="#" class="social-icon linkedin"><i class="fa-brands fa-linkedin-in"></i></a>
+                </div>
+            </div>
+        </aside>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>About Nexus News Hub</h3>
+                <p>Your trusted source for breaking news, analysis, and in-depth reporting from around the world.</p>
+            </div>
+            <div class="footer-section">
+                <h3>Categories</h3>
+                <ul>
+                    <li><a href="#">Politics</a></li>
+                    <li><a href="#">Business</a></li>
+                    <li><a href="#">Technology</a></li>
+                    <li><a href="#">Sports</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Contact</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Terms of Service</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Newsletter</h3>
+                <p>Subscribe to get the latest news delivered to your inbox.</p>
+                <div class="newsletter-form">
+                    <input type="email" placeholder="Your email">
+                    <button>Subscribe</button>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Nexus News Hub. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="Assets/js/article.js"></script>
+    <script src="Assets/js/main.js"></script>
+</body>
+</html>

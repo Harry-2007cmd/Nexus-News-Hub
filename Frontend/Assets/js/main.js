@@ -1,7 +1,7 @@
 // ===============================
 // CONFIG (newsdata.io)
 // ===============================
-const API_KEY = "pub_85f5b9939ead4fbe89849263f29b69e7";
+const API_KEY = "pub_2e918269e8e04b2fbe61b0a1d22dc930";
 const BASE_URL = `https://newsdata.io/api/1/news?apikey=${API_KEY}&country=in&language=en`;
 
 // ===============================
@@ -17,7 +17,6 @@ const heroLink      = document.getElementById("heroLink");
 const secondaryNews = document.getElementById("secondaryNews");
 const newsGrid      = document.getElementById("newsGrid");
 
-// Fallback placeholder
 const PLACEHOLDER = "https://placehold.co/600x400/e5e5e5/aaa?text=No+Image";
 
 function safeImg(url) {
@@ -27,8 +26,8 @@ function safeImg(url) {
 function timeAgo(dateStr) {
   if (!dateStr) return "";
   const diff = Math.floor((Date.now() - new Date(dateStr)) / 60000);
-  if (diff < 1)  return "Just now";
-  if (diff < 60) return `${diff} min ago`;
+  if (diff < 1)    return "Just now";
+  if (diff < 60)   return `${diff} min ago`;
   if (diff < 1440) return `${Math.floor(diff / 60)} hours ago`;
   return `${Math.floor(diff / 1440)} days ago`;
 }
@@ -39,17 +38,29 @@ function capitalize(str) {
 }
 
 // ===============================
+// NAVIGATE TO ARTICLE PAGE
+// ===============================
+function openArticle(article) {
+  sessionStorage.setItem("currentArticle", JSON.stringify(article));
+  window.location.href = "article.html";
+}
+
+// ===============================
 // FETCH NEWS
 // ===============================
+let allArticles = [];
+
 async function fetchNews() {
   try {
     const response = await fetch(BASE_URL);
     const data = await response.json();
     if (!data.results || !data.results.length) throw new Error("No results");
-    displayBreakingNews(data.results);
-    displayTrending(data.results);
-    displayHero(data.results);
-    displayLatest(data.results);
+    allArticles = data.results;
+    sessionStorage.setItem("allArticles", JSON.stringify(allArticles));
+    displayBreakingNews(allArticles);
+    displayTrending(allArticles);
+    displayHero(allArticles);
+    displayLatest(allArticles);
   } catch (error) {
     console.error("Fetch error:", error);
     if (ticker) ticker.textContent = "Failed to load news. Please try again later.";
@@ -72,17 +83,21 @@ function displayBreakingNews(articles) {
 // ===============================
 function displayTrending(articles) {
   trendingList.innerHTML = "";
-  articles.slice(0, 5).forEach((article, i) => {
+  articles.slice(0, 5).forEach(article => {
     const views = Math.floor(Math.random() * 10000 + 5000).toLocaleString();
     const li = document.createElement("li");
     li.innerHTML = `
-      <a href="${article.link}" target="_blank" rel="noopener">
+      <a href="article.html">
         <div>
-          <div style="font-weight:700; font-family:Arial,sans-serif; font-size:0.88rem; color:var(--text-primary); line-height:1.4; margin-bottom:3px;">${article.title}</div>
-          <div style="font-size:0.75rem; color:var(--text-muted); font-family:Arial,sans-serif;">${views} views</div>
+          <div style="font-weight:700;font-family:Arial,sans-serif;font-size:0.88rem;color:var(--text-primary);line-height:1.4;margin-bottom:3px;">${article.title}</div>
+          <div style="font-size:0.75rem;color:var(--text-muted);font-family:Arial,sans-serif;">${views} views</div>
         </div>
       </a>
     `;
+    li.querySelector("a").addEventListener("click", (e) => {
+      e.preventDefault();
+      openArticle(article);
+    });
     trendingList.appendChild(li);
   });
 }
@@ -99,7 +114,12 @@ function displayHero(articles) {
   heroTitle.textContent = main.title || "";
   heroExcerpt.textContent = main.description || "";
   heroCategory.textContent = capitalize(main.category?.[0] || "Top News");
-  heroLink.href = main.link || "#";
+
+  heroLink.href = "article.html";
+  heroLink.addEventListener("click", (e) => {
+    e.preventDefault();
+    openArticle(main);
+  });
 
   secondaryNews.innerHTML = "";
   articles.slice(1, 4).forEach(article => {
@@ -113,7 +133,8 @@ function displayHero(articles) {
       <h4>${article.title || ""}</h4>
       ${desc ? `<p>${desc.slice(0, 80)}${desc.length > 80 ? "..." : ""}</p>` : ""}
     `;
-    div.addEventListener("click", () => window.open(article.link, "_blank", "noopener"));
+    div.style.cursor = "pointer";
+    div.addEventListener("click", () => openArticle(article));
     secondaryNews.appendChild(div);
   });
 }
@@ -144,7 +165,8 @@ function displayLatest(articles) {
         </div>
       </div>
     `;
-    card.addEventListener("click", () => window.open(article.link, "_blank", "noopener"));
+    card.style.cursor = "pointer";
+    card.addEventListener("click", () => openArticle(article));
     newsGrid.appendChild(card);
   });
 }
@@ -176,28 +198,9 @@ document.querySelectorAll(".category-link").forEach(link => {
 });
 
 // ===============================
-// SEARCH (filter loaded articles)
+// SEARCH
 // ===============================
 const searchInput = document.querySelector(".search-input");
-let allArticles = [];
-
-const _origFetch = fetchNews;
-async function fetchNews() {
-  try {
-    const response = await fetch(BASE_URL);
-    const data = await response.json();
-    if (!data.results || !data.results.length) throw new Error("No results");
-    allArticles = data.results;
-    displayBreakingNews(allArticles);
-    displayTrending(allArticles);
-    displayHero(allArticles);
-    displayLatest(allArticles);
-  } catch (error) {
-    console.error("Fetch error:", error);
-    if (ticker) ticker.textContent = "Failed to load news. Please try again later.";
-  }
-}
-
 if (searchInput) {
   searchInput.addEventListener("input", () => {
     const q = searchInput.value.toLowerCase().trim();

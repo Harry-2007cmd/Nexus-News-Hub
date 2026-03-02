@@ -375,30 +375,21 @@ button {
   border-bottom: none;
 }
 
-.trending-list li a,
+.trending-list {
+  counter-reset: trending;
+}
+
 .trending-list li {
+  counter-increment: trending;
   display: flex;
   align-items: flex-start;
   gap: 14px;
   padding: 14px 16px;
-  font-family: Arial, sans-serif;
-  font-size: 0.88rem;
-  font-weight: 600;
-  color: var(--text-primary);
-  line-height: 1.4;
-  transition: background var(--transition), color var(--transition);
-  text-decoration: none;
-  counter-increment: trending;
+  transition: background var(--transition);
 }
 
-.trending-list li a:hover {
+.trending-list li:hover {
   background: rgba(192,0,26,0.04);
-  color: var(--primary);
-}
-
-/* Numbered ranking */
-.trending-list {
-  counter-reset: trending;
 }
 
 .trending-list li::before {
@@ -412,15 +403,20 @@ button {
   flex-shrink: 0;
 }
 
-/* When li has a child anchor */
 .trending-list li a {
+  display: block;
   width: 100%;
-  padding: 0;
-  background: none;
+  font-family: Arial, sans-serif;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  line-height: 1.4;
+  text-decoration: none;
+  transition: color var(--transition);
 }
 
-.trending-list li:hover {
-  background: rgba(192,0,26,0.04);
+.trending-list li a:hover {
+  color: var(--primary);
 }
 
 /* Advertisement */
