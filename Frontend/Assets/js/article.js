@@ -53,6 +53,19 @@ function loadArticle() {
 
   const article = JSON.parse(raw);
 
+  // Track recently viewed
+  const recent = JSON.parse(localStorage.getItem("recentArticles") || "[]");
+  const alreadyIn = recent.some(r => r.link === article.link);
+  if (!alreadyIn) {
+    recent.unshift(article);
+    localStorage.setItem("recentArticles", JSON.stringify(recent.slice(0, 10)));
+  }
+
+  // Track stats
+  const stats = JSON.parse(localStorage.getItem("userStats") || "{}");
+  stats.articles = (stats.articles || 0) + 1;
+  localStorage.setItem("userStats", JSON.stringify(stats));
+
   // Page title
   document.title = `${article.title || "Article"} - Nexus News Hub`;
 
