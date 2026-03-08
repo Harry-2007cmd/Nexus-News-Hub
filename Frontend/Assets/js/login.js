@@ -1,5 +1,5 @@
 // ===============================
-// THEME TOGGLE (mirrors index page)
+// THEME TOGGLE 
 // ===============================
 const themeToggle = document.getElementById("themeToggle");
 const html = document.documentElement;
