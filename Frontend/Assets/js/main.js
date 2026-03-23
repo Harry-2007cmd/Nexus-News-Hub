@@ -303,7 +303,7 @@ document.querySelectorAll(".category-link").forEach(link => {
 });
 
 // ===============================
-// SEARCH — fixed: updates hero + grid + debounced
+// SEARCH 
 // ===============================
 const searchInput = document.querySelector(".search-input");
 if (searchInput) {
