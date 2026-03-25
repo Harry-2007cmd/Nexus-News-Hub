@@ -169,7 +169,6 @@ function displayLatest(articles) {
     card.addEventListener("click", () => openArticle(article));
     newsGrid.appendChild(card);
   });
-  console.log(articles);
 }
 
 // ===============================
