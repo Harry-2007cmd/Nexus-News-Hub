@@ -169,6 +169,7 @@ function displayLatest(articles) {
     card.addEventListener("click", () => openArticle(article));
     newsGrid.appendChild(card);
   });
+  console.log(articles);
 }
 
 // ===============================
@@ -186,35 +187,7 @@ themeToggle.addEventListener("click", () => {
   localStorage.setItem("theme", newTheme);
 });
 
-// ===============================
-// CATEGORY NAV ACTIVE STATE
-// ===============================
-document.querySelectorAll(".category-link").forEach(link => {
-  link.addEventListener("click", e => {
-    e.preventDefault();
-    document.querySelectorAll(".category-link").forEach(l => l.classList.remove("active"));
-    link.classList.add("active");
-  });
-});
 
-// ===============================
-// SEARCH
-// ===============================
-const searchInput = document.querySelector(".search-input");
-if (searchInput) {
-  searchInput.addEventListener("input", () => {
-    const q = searchInput.value.toLowerCase().trim();
-    if (!q || !allArticles.length) {
-      if (allArticles.length) displayLatest(allArticles);
-      return;
-    }
-    const filtered = allArticles.filter(a =>
-      (a.title || "").toLowerCase().includes(q) ||
-      (a.description || "").toLowerCase().includes(q)
-    );
-    displayLatest(filtered);
-  });
-}
 
 // ===============================
 // INIT

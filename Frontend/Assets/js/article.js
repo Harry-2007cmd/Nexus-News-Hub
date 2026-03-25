@@ -186,7 +186,7 @@ function loadRelated() {
 }
 
 // ===============================
-// THEME TOGGLE (mirrored from main.js)
+// THEME TOGGLE 
 // ===============================
 const themeToggle = document.getElementById("themeToggle");
 const html = document.documentElement;
