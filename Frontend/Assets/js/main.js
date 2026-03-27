@@ -1,7 +1,7 @@
 // ===============================
 // CONFIG (newsdata.io)
 // ===============================
-const API_KEY = "pub_e72aad5422f042a18fcbdc993f98e277";
+const API_KEY = "pub_bff503765abd457d8f914d1be47d9207";
 const BASE_URL = `https://newsdata.io/api/1/news?apikey=${API_KEY}&country=in&language=en`;
 
 // ===============================
