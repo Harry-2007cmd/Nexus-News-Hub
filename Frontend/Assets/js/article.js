@@ -53,6 +53,19 @@ function loadArticle() {
 
   const article = JSON.parse(raw);
 
+  // Track recently viewed
+  const recent = JSON.parse(localStorage.getItem("recentArticles") || "[]");
+  const alreadyIn = recent.some(r => r.link === article.link);
+  if (!alreadyIn) {
+    recent.unshift(article);
+    localStorage.setItem("recentArticles", JSON.stringify(recent.slice(0, 10)));
+  }
+
+  // Track stats
+  const stats = JSON.parse(localStorage.getItem("userStats") || "{}");
+  stats.articles = (stats.articles || 0) + 1;
+  localStorage.setItem("userStats", JSON.stringify(stats));
+
   // Page title
   document.title = `${article.title || "Article"} - Nexus News Hub`;
 
@@ -148,7 +161,7 @@ function loadRelated() {
   const current = JSON.parse(currentRaw);
   const currentCategory = current.category?.[0] || "";
 
-  // Filter related: same category or different articles, exclude current
+  // Filter related: same categorgity or different articles, exclude current
   const related = all
     .filter(a => a.link !== current.link)
     .sort((a, b) => {
@@ -201,7 +214,49 @@ themeToggle.addEventListener("click", () => {
 });
 
 // ===============================
+// USER NAV
+// ===============================
+function updateNavForUser() {
+  const userRaw = localStorage.getItem("currentUser") || sessionStorage.getItem("currentUser");
+  const navRight = document.querySelector(".nav-right");
+  if (!navRight || !userRaw) return;
+
+  const user = JSON.parse(userRaw);
+  const initials = user.name
+    ? user.name.split(" ").map(n => n[0]).join("").toUpperCase().slice(0, 2)
+    : "U";
+
+  navRight.querySelector(".btn-secondary")?.remove();
+  navRight.querySelector(".btn-primary")?.remove();
+
+  const avatar = document.createElement("div");
+  avatar.className = "user-avatar";
+  avatar.innerHTML = `
+    <span class="avatar-initials">${initials}</span>
+    <div class="avatar-dropdown">
+      <div class="avatar-name">${user.name || "User"}</div>
+      <div class="avatar-email">${user.email || ""}</div>
+      <hr style="margin:8px 0;border-color:var(--border);">
+      <a href="profile.html" class="dropdown-item"><i class="fa-solid fa-user"></i> My Profile</a>
+      <a href="#" class="dropdown-item" id="logoutBtn"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
+    </div>
+  `;
+  navRight.appendChild(avatar);
+
+  avatar.addEventListener("click", (e) => { e.stopPropagation(); avatar.classList.toggle("open"); });
+  document.addEventListener("click", () => avatar.classList.remove("open"));
+
+  document.getElementById("logoutBtn")?.addEventListener("click", (e) => {
+    e.preventDefault();
+    localStorage.removeItem("currentUser");
+    sessionStorage.removeItem("currentUser");
+    window.location.href = "index.html";
+  });
+}
+
+// ===============================
 // INIT
 // ===============================
+updateNavForUser();
 loadArticle();
 loadRelated();

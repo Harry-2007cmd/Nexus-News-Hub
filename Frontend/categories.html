@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Category - Nexus News Hub</title>
+    <link rel="stylesheet" href="Assets/css/main.css">
+    <link rel="stylesheet" href="Assets/css/category.css">
+    <script>(function(){document.documentElement.setAttribute("data-theme",localStorage.getItem("theme")||"light");})()</script>
+    <script src="https://kit.fontawesome.com/1eda1e965c.js" crossorigin="anonymous"></script>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-left">
+                <div class="logo">
+                    <h1 onclick="window.location.href='index.html'" style="cursor:pointer;">Nexus News Hub</h1>
+                    <span class="tagline">Truth Matters</span>
+                </div>
+            </div>
+            <div class="nav-center">
+                <div class="search-container">
+                    <input type="text" class="search-input" id="categorySearch" placeholder="Search in this category...">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </div>
+            </div>
+            <div class="nav-right">
+                <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+                    <svg class="sun-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <circle cx="12" cy="12" r="4"></circle>
+                        <path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32l1.41 1.41M2 12h2m16 0h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path>
+                    </svg>
+                    <svg class="moon-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                </button>
+                <button class="btn-secondary" onclick="window.location.href='login.html'">Login</button>
+                <button class="btn-primary" onclick="window.location.href='login.html'">Sign Up</button>
+            </div>
+        </div>
+        <div class="category-nav">
+            <a href="index.html" class="category-link">Home</a>
+            <a href="category.html?cat=politics" class="category-link">Politics</a>
+            <a href="category.html?cat=business" class="category-link">Business</a>
+            <a href="category.html?cat=technology" class="category-link">Technology</a>
+            <a href="category.html?cat=sports" class="category-link">Sports</a>
+            <a href="category.html?cat=entertainment" class="category-link">Entertainment</a>
+            <a href="category.html?cat=world" class="category-link">World</a>
+            <a href="category.html?cat=health" class="category-link">Health</a>
+        </div>
+    </nav>
+
+    <!-- Category Hero Banner -->
+    <div class="category-hero" id="categoryHero">
+        <div class="category-hero-inner">
+            <div class="cat-icon" id="catIcon"><i class="fa-solid fa-newspaper"></i></div>
+            <div>
+                <h1 class="cat-hero-title" id="catHeroTitle">Loading...</h1>
+                <p class="cat-hero-sub" id="catHeroSub">Latest news and updates</p>
+            </div>
+        </div>
+        <div class="cat-stats">
+            <div class="cat-stat"><span id="catArticleCount">—</span> <span>Articles</span></div>
+            <div class="cat-stat-divider"></div>
+            <div class="cat-stat"><span>Live</span> <span class="live-dot"></span></div>
+        </div>
+    </div>
+
+    <!-- Sort + Filter Bar -->
+    <div class="filter-bar-wrap">
+        <div class="filter-bar">
+            <div class="filter-left">
+                <span class="filter-label"><i class="fa-solid fa-sliders"></i> Sort by:</span>
+                <button class="filter-btn active" data-sort="latest">Latest</button>
+                <button class="filter-btn" data-sort="popular">Most Viewed</button>
+            </div>
+            <div class="filter-right">
+                <span class="results-count" id="resultsCount"></span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="cat-container">
+
+        <!-- Top Story (Featured) -->
+        <div class="top-story-wrap" id="topStoryWrap" style="display:none;">
+            <h2 class="section-title"><i class="fa-solid fa-star"></i> Top Story</h2>
+            <div class="top-story" id="topStory"></div>
+        </div>
+
+        <!-- All Articles Grid -->
+        <div class="cat-articles-section">
+            <h2 class="section-title" id="gridTitle"><i class="fa-solid fa-grip"></i> All Articles</h2>
+            <div class="cat-grid" id="catGrid">
+                <!-- Filled by JS -->
+            </div>
+            <button class="load-more-btn" id="loadMoreBtn" style="display:none;">
+                <i class="fa-solid fa-chevron-down"></i> Load More
+            </button>
+        </div>
+
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>About Nexus News Hub</h3>
+                <p>Your trusted source for breaking news, analysis, and in-depth reporting from around the world.</p>
+            </div>
+            <div class="footer-section">
+                <h3>Categories</h3>
+                <ul>
+                    <li><a href="category.html?cat=politics">Politics</a></li>
+                    <li><a href="category.html?cat=business">Business</a></li>
+                    <li><a href="category.html?cat=technology">Technology</a></li>
+                    <li><a href="category.html?cat=sports">Sports</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Contact</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Terms of Service</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Newsletter</h3>
+                <p>Subscribe to get the latest news delivered to your inbox.</p>
+                <div class="newsletter-form">
+                    <input type="email" placeholder="Your email">
+                    <button>Subscribe</button>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Nexus News Hub. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="Assets/js/category.js"></script>
+</body>
+</html>

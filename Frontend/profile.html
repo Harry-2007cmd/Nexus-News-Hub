@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile - Nexus News Hub</title>
+    <link rel="stylesheet" href="Assets/css/main.css">
+    <link rel="stylesheet" href="Assets/css/profile.css">
+    <script>(function(){document.documentElement.setAttribute("data-theme",localStorage.getItem("theme")||"light");})()</script>
+    <script src="https://kit.fontawesome.com/1eda1e965c.js" crossorigin="anonymous"></script>
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-left">
+                <div class="logo">
+                    <h1 onclick="window.location.href='index.html'" style="cursor:pointer;">Nexus News Hub</h1>
+                    <span class="tagline">Truth Matters</span>
+                </div>
+            </div>
+            <div class="nav-center">
+                <div class="search-container">
+                    <input type="text" class="search-input" placeholder="Search news ...">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </div>
+            </div>
+            <div class="nav-right">
+                <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+                    <svg class="sun-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <circle cx="12" cy="12" r="4"></circle>
+                        <path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32l1.41 1.41M2 12h2m16 0h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path>
+                    </svg>
+                    <svg class="moon-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                </button>
+                <button class="btn-secondary" onclick="window.location.href='index.html'">
+                    <i class="fa-solid fa-house"></i> Home
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="profile-container">
+
+        <!-- Profile Header -->
+        <div class="profile-header">
+            <div class="profile-avatar-large" id="profileAvatarLarge">U</div>
+            <div class="profile-header-info">
+                <h1 id="profileName">User</h1>
+                <p id="profileEmail" class="profile-email"></p>
+                <p id="profileJoined" class="profile-joined"></p>
+                <div class="profile-badges">
+                    <span class="badge"><i class="fa-solid fa-check-circle"></i> Verified Member</span>
+                    <span class="badge badge-news"><i class="fa-solid fa-newspaper"></i> News Reader</span>
+                </div>
+            </div>
+            <button class="edit-profile-btn" id="editProfileBtn">
+                <i class="fa-solid fa-pen"></i> Edit Profile
+            </button>
+        </div>
+
+        <div class="profile-body">
+
+            <!-- Left: Settings -->
+            <div class="profile-sidebar">
+                <div class="profile-card">
+                    <h3><i class="fa-solid fa-user"></i> Account Info</h3>
+                    <div class="info-row">
+                        <span class="info-label">Full Name</span>
+                        <span class="info-value" id="infoName">—</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Email</span>
+                        <span class="info-value" id="infoEmail">—</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Member Since</span>
+                        <span class="info-value" id="infoSince">—</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Newsletter</span>
+                        <span class="info-value" id="infoNewsletter">—</span>
+                    </div>
+                </div>
+
+                <div class="profile-card">
+                    <h3><i class="fa-solid fa-sliders"></i> Preferences</h3>
+                    <div class="pref-row">
+                        <span>Dark Mode</span>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="darkModeToggle">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    <div class="pref-row">
+                        <span>Breaking News Alerts</span>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="alertsToggle" checked>
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    <div class="pref-row">
+                        <span>Newsletter</span>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="newsletterToggle">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                </div>
+
+                <button class="logout-btn" id="logoutBtn">
+                    <i class="fa-solid fa-right-from-bracket"></i> Logout
+                </button>
+            </div>
+
+            <!-- Right: Activity + Interests -->
+            <div class="profile-main">
+
+                <!-- Stats -->
+                <div class="stats-row">
+                    <div class="stat-card">
+                        <div class="stat-icon"><i class="fa-solid fa-book-open"></i></div>
+                        <div class="stat-num" id="statArticles">0</div>
+                        <div class="stat-label">Articles Read</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon"><i class="fa-solid fa-bookmark"></i></div>
+                        <div class="stat-num" id="statBookmarks">0</div>
+                        <div class="stat-label">Bookmarked</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon"><i class="fa-solid fa-share-nodes"></i></div>
+                        <div class="stat-num" id="statShared">0</div>
+                        <div class="stat-label">Shared</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon"><i class="fa-solid fa-fire"></i></div>
+                        <div class="stat-num" id="statStreak">1</div>
+                        <div class="stat-label">Day Streak</div>
+                    </div>
+                </div>
+
+                <!-- News Interests -->
+                <div class="profile-card">
+                    <h3><i class="fa-solid fa-heart"></i> News Interests</h3>
+                    <p style="font-size:0.85rem;color:var(--text-muted);margin-bottom:16px;">Select categories you want to follow</p>
+                    <div class="interests-grid" id="interestsGrid">
+                        <!-- filled by JS -->
+                    </div>
+                    <button class="save-interests-btn" id="saveInterestsBtn">
+                        <i class="fa-solid fa-check"></i> Save Interests
+                    </button>
+                </div>
+
+                <!-- Edit Profile Form (hidden by default) -->
+                <div class="profile-card" id="editFormCard" style="display:none;">
+                    <h3><i class="fa-solid fa-pen"></i> Edit Profile</h3>
+                    <div class="edit-form">
+                        <div class="form-group">
+                            <label>Full Name</label>
+                            <input type="text" id="editName" placeholder="Your name">
+                        </div>
+                        <div class="form-group">
+                            <label>Email Address</label>
+                            <input type="email" id="editEmail" placeholder="Your email">
+                        </div>
+                        <div class="form-group">
+                            <label>New Password <span style="color:var(--text-muted);font-weight:400;">(leave blank to keep current)</span></label>
+                            <input type="password" id="editPassword" placeholder="New password">
+                        </div>
+                        <div class="edit-form-actions">
+                            <button class="save-btn" id="saveProfileBtn"><i class="fa-solid fa-check"></i> Save Changes</button>
+                            <button class="cancel-btn" id="cancelEditBtn"><i class="fa-solid fa-xmark"></i> Cancel</button>
+                        </div>
+                        <div id="editMessage" class="edit-message" style="display:none;"></div>
+                    </div>
+                </div>
+
+                <!-- Recently Viewed -->
+                <div class="profile-card">
+                    <h3><i class="fa-regular fa-clock"></i> Recently Viewed</h3>
+                    <div id="recentlyViewed" class="recently-viewed">
+                        <p style="color:var(--text-muted);font-size:0.88rem;padding:8px 0;">
+                            <i class="fa-solid fa-circle-info" style="margin-right:6px;"></i>
+                            Articles you read will appear here.
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="footer-bottom">
+            <p>&copy; 2026 Nexus News Hub. All rights reserved. |
+                <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a>
+            </p>
+        </div>
+    </footer>
+
+    <script src="Assets/js/profile.js"></script>
+</body>
+</html>
