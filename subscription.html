@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Subscribe - Nexus News Hub</title>
+    <link rel="stylesheet" href="Frontend/Assets/css/main.css">
+    <link rel="stylesheet" href="Frontend/Assets/css/subscription.css">
+    <script>(function(){document.documentElement.setAttribute("data-theme",localStorage.getItem("theme")||"light");})()</script>
+    <script src="https://kit.fontawesome.com/1eda1e965c.js" crossorigin="anonymous"></script>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-left">
+                <div class="logo">
+                    <h1 onclick="window.location.href='index.html'" style="cursor:pointer;">Nexus News Hub</h1>
+                    <span class="tagline">Truth Matters</span>
+                </div>
+            </div>
+            <div class="nav-center">
+                <div class="search-container">
+                    <input type="text" class="search-input" placeholder="Search news ...">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </div>
+            </div>
+            <div class="nav-right" id="navRight">
+                <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+                    <svg class="sun-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <circle cx="12" cy="12" r="4"></circle>
+                        <path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32l1.41 1.41M2 12h2m16 0h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path>
+                    </svg>
+                    <svg class="moon-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                </button>
+                <button class="btn-secondary" onclick="window.location.href='login.html'">Login</button>
+                <button class="btn-primary" onclick="window.location.href='login.html'">Sign Up</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <div class="sub-hero">
+        <div class="sub-hero-inner">
+            <div class="sub-hero-eyebrow">
+                <i class="fa-solid fa-crown"></i> Choose Your Plan
+            </div>
+            <h1>News Without <span>Limits</span></h1>
+            <p>Get unlimited access to breaking news, in-depth analysis, and exclusive content from across India and the world.</p>
+
+            <!-- Billing Toggle -->
+            <div class="billing-toggle">
+                <span class="billing-label active" id="labelMonthly">Monthly</span>
+                <label class="toggle-pill">
+                    <input type="checkbox" id="billingToggle">
+                    <span class="toggle-pill-slider"></span>
+                </label>
+                <span class="billing-label" id="labelYearly">Yearly</span>
+                <span class="save-badge">Save 17%</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Current Plan Banner (shown when logged in) -->
+    <div class="current-plan-banner" id="currentPlanBanner">
+        <div class="cpb-inner">
+            <i class="fa-solid fa-circle-check"></i>
+            <div class="cpb-text">
+                You are currently on the <strong id="currentPlanLabel">Free</strong> plan.
+            </div>
+            <a href="#plans" class="cpb-change">Change plan ↓</a>
+        </div>
+    </div>
+
+    <!-- Plans Grid -->
+    <div class="plans-section" id="plans">
+        <div class="plans-grid">
+
+            <!-- FREE PLAN -->
+            <div class="plan-card" id="cardFree">
+                <div class="plan-header">
+                    <div class="plan-icon free-icon">
+                        <i class="fa-solid fa-newspaper"></i>
+                    </div>
+                    <div class="plan-name">Free</div>
+                    <div class="plan-tagline">Stay informed with the basics — no card required.</div>
+                    <div class="plan-price">
+                        <span class="price-currency"></span>
+                        <span class="price-amount">₹0</span>
+                    </div>
+                    <div class="price-period">Forever free</div>
+                    <span class="price-savings hidden"></span>
+                </div>
+                <div class="plan-body">
+                    <div class="features-label">What's included</div>
+                    <ul class="features-list">
+                        <li>
+                            <span class="feat-icon yes"><i class="fa-solid fa-check"></i></span>
+                            10 articles per day
+                        </li>
+                        <li>
+                            <span class="feat-icon yes"><i class="fa-solid fa-check"></i></span>
+                            Breaking news ticker
+                        </li>
+                        <li>
+                            <span class="feat-icon yes"><i class="fa-solid fa-check"></i></span>
+                            Browse all categories
+                        </li>
+                        <li>
+                            <span class="feat-icon yes"><i class="fa-solid fa-check"></i></span>
+                            Standard article view
+                        </li>
+                        <li class="disabled">
+                            <span class="feat-icon no"><i class="fa-solid fa-xmark"></i></span>
+                            Ad-free experience
+                        </li>
+                        <li class="disabled">
+                            <span class="feat-icon no"><i class="fa-solid fa-xmark"></i></span>
+                            Unlimited articles
+                        </li>
+                        <li class="disabled">
+                            <span class="feat-icon no"><i class="fa-solid fa-xmark"></i></span>
+                            Early access to news
+                        </li>
+                        <li class="disabled">
+                            <span class="feat-icon no"><i class="fa-solid fa-xmark"></i></span>
+                            Priority email support
+                        </li>
+                    </ul>
+                    <button class="plan-cta cta-free" id="ctaFree" onclick="handleFree()">
+                        <i class="fa-solid fa-arrow-right"></i> Get Started Free
+                    </button>
+                </div>
+            </div>
+
+            <!-- MONTHLY PLAN -->
+            <div class="plan-card popular" id="cardMonthly">
+                <div class="popular-badge">
+                    <i class="fa-solid fa-fire"></i> Most Popular
+                </div>
+                <div class="plan-header">
+                    <div class="plan-icon monthly-icon">
+                        <i class="fa-solid fa-bolt"></i>
+                    </div>
+                    <div class="plan-name">Monthly</div>
+                    <div class="plan-tagline">Full access, billed monthly. Cancel anytime.</div>
+                    <div class="plan-price">
+                        <span class="price-currency">₹</span>
+                        <span class="price-amount" id="monthlyPrice">200</span>
+                    </div>
+                    <div class="price-period" id="monthlyPeriod">per month</div>
+                    <span class="price-savings hidden" id="monthlySavings"></span>
+                </div>
+                <div class="plan-body">
+                    <div class="features-label">Everything in Free, plus</div>
+                    <ul class="features-list">
+                        <li>
+                            <span class="feat-icon yes"><i class="fa-solid fa-check"></i></span>
+                            <strong>Unlimited</strong> articles daily
+                        </li>
+                        <li>
+                            <span class="feat-icon yes"><i class="fa-solid fa-check"></i></span>
+                            100% ad-free reading
+                        </li>
+                        <li>
+                            <span class="feat-icon yes"><i class="fa-solid fa-check"></i></span>
+                            Early access to breaking news
+                        </li>
+                        <li>
+                            <span class="feat-icon yes"><i class="fa-solid fa-check"></i></span>
+                            Personalised news feed
+                        </li>
+                        <li>
+                            <span class="feat-icon yes"><i class="fa-solid fa-check"></i></span>
+                            Bookmark & save articles
+                        </li>
+                        <li>
+                            <span class="feat-icon yes"><i class="fa-solid fa-check"></i></span>
+                            Daily newsletter digest
+                        </li>
+                        <li>
+                            <span class="feat-icon yes"><i class="fa-solid fa-check"></i></span>
+                            Email support
+                        </li>
+                        <li class="disabled">
+                            <span class="feat-icon no"><i class="fa-solid fa-xmark"></i></span>
+                            Annual savings & perks
+                        </li>
+                    </ul>
+                    <button class="plan-cta cta-primary" id="ctaMonthly" onclick="openModal('monthly')">
+                        <i class="fa-solid fa-credit-card"></i> Subscribe Monthly
+                    </button>
+                </div>
+            </div>
+
+            <!-- YEARLY PLAN -->
+            <div class="plan-card" id="cardYearly">
+                <div class="plan-header">
+                    <div class="plan-icon yearly-icon">
+                        <i class="fa-solid fa-crown"></i>
+                    </div>
+                    <div class="plan-name">Annual</div>
+                    <div class="plan-tagline">Best value — 2 months free when you pay yearly.</div>
+                    <div class="plan-price">
+                        <span class="price-currency">₹</span>
+                        <span class="price-amount" id="yearlyPrice">2000</span>
+                    </div>
+                    <div class="price-period" id="yearlyPeriod">per year <span style="color:var(--text-muted);font-size:0.78rem;">(≈ ₹167/mo)</span></div>
+                    <span class="price-savings" id="yearlySavings">Save ₹400 vs monthly</span>
+                </div>
+                <div class="plan-body">
+                    <div class="features-label">Everything in Monthly, plus</div>
+                    <ul class="features-list">
+                        <li>
+                            <span class="feat-icon yes"><i class="fa-solid fa-check"></i></span>
+                            <strong>Save ₹400</strong> vs monthly billing
+                        </li>
+                        <li>
+                            <span class="feat-icon yes"><i class="fa-solid fa-check"></i></span>
+                            Unlimited articles & archives
+                        </li>
+                        <li>
+                            <span class="feat-icon yes"><i class="fa-solid fa-check"></i></span>
+                            Priority email support
+                        </li>
+                        <li>
+                            <span class="feat-icon yes"><i class="fa-solid fa-check"></i></span>
+                            Exclusive annual subscriber badge
+                        </li>
+                        <li>
+                            <span class="feat-icon yes"><i class="fa-solid fa-check"></i></span>
+                            Early feature access
+                        </li>
+                        <li>
+                            <span class="feat-icon yes"><i class="fa-solid fa-check"></i></span>
+                            Weekly curated digest
+                        </li>
+                        <li>
+                            <span class="feat-icon yes"><i class="fa-solid fa-check"></i></span>
+                            All future premium features
+                        </li>
+                        <li>
+                            <span class="feat-icon yes"><i class="fa-solid fa-check"></i></span>
+                            Ad-free on all devices
+                        </li>
+                    </ul>
+                    <button class="plan-cta cta-yearly" id="ctaYearly" onclick="openModal('yearly')">
+                        <i class="fa-solid fa-crown"></i> Subscribe Annually
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Trust Strip -->
+    <div class="trust-strip">
+        <div class="trust-item">
+            <i class="fa-solid fa-lock"></i>
+            <h4>Secure Payments</h4>
+            <p>All transactions are encrypted with 256-bit SSL. Your payment details are never stored.</p>
+        </div>
+        <div class="trust-item">
+            <i class="fa-solid fa-rotate-left"></i>
+            <h4>Cancel Anytime</h4>
+            <p>No long-term commitment. Cancel your subscription at any time with one click.</p>
+        </div>
+        <div class="trust-item">
+            <i class="fa-solid fa-headset"></i>
+            <h4>Dedicated Support</h4>
+            <p>Our team is available 7 days a week to help with any subscription queries.</p>
+        </div>
+    </div>
+
+    <!-- FAQ -->
+    <div class="faq-section">
+        <h2>Frequently Asked Questions</h2>
+
+        <div class="faq-item">
+            <button class="faq-question" onclick="toggleFaq(this)">
+                Can I switch plans later?
+                <i class="fa-solid fa-chevron-down"></i>
+            </button>
+            <div class="faq-answer">
+                <p>Yes! You can upgrade or downgrade your plan at any time from your profile page. When upgrading, you'll be charged the prorated difference. When downgrading, the change takes effect at the end of your current billing cycle.</p>
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <button class="faq-question" onclick="toggleFaq(this)">
+                What payment methods are accepted?
+                <i class="fa-solid fa-chevron-down"></i>
+            </button>
+            <div class="faq-answer">
+                <p>We accept all major credit and debit cards (Visa, Mastercard, RuPay), UPI payments, net banking, and popular digital wallets like Paytm, PhonePe, and Google Pay.</p>
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <button class="faq-question" onclick="toggleFaq(this)">
+                Is the annual plan really cheaper?
+                <i class="fa-solid fa-chevron-down"></i>
+            </button>
+            <div class="faq-answer">
+                <p>Absolutely. The monthly plan costs ₹200 × 12 = ₹2,400 per year, while the annual plan is just ₹2,000 — saving you ₹400 (about 2 months free). It's our best value option for regular readers.</p>
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <button class="faq-question" onclick="toggleFaq(this)">
+                What happens when my free trial ends?
+                <i class="fa-solid fa-chevron-down"></i>
+            </button>
+            <div class="faq-answer">
+                <p>The Free plan has no trial period — it's free forever with a 10 article/day limit. Paid plans don't currently include a free trial, but you can cancel within 7 days of subscribing for a full refund if you're not satisfied.</p>
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <button class="faq-question" onclick="toggleFaq(this)">
+                How do I cancel my subscription?
+                <i class="fa-solid fa-chevron-down"></i>
+            </button>
+            <div class="faq-answer">
+                <p>You can cancel anytime from your Profile page under Account Settings. Your access continues until the end of the current billing period. We don't charge any cancellation fees.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Payment Modal -->
+    <div class="modal-overlay" id="paymentModal">
+        <div class="modal-box">
+            <button class="modal-close" onclick="closeModal()">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+            <!-- Form View -->
+            <div id="modalFormView">
+                <div class="modal-plan-badge" id="modalPlanBadge">
+                    <i class="fa-solid fa-bolt"></i> Monthly Plan
+                </div>
+                <h3 id="modalTitle">Complete Your Subscription</h3>
+                <p class="modal-subtitle" id="modalSubtitle">You're one step away from unlimited access.</p>
+
+                <div class="modal-form">
+                    <div class="form-group">
+                        <label><i class="fa-solid fa-user"></i> Cardholder Name</label>
+                        <input type="text" id="cardName" placeholder="Name on card" autocomplete="cc-name">
+                    </div>
+                    <div class="form-group">
+                        <label><i class="fa-solid fa-credit-card"></i> Card Number</label>
+                        <input type="text" id="cardNumber" placeholder="1234 5678 9012 3456" maxlength="19" autocomplete="cc-number">
+                    </div>
+                    <div class="card-row">
+                        <div class="form-group">
+                            <label><i class="fa-regular fa-calendar"></i> Expiry Date</label>
+                            <input type="text" id="cardExpiry" placeholder="MM / YY" maxlength="7" autocomplete="cc-exp">
+                        </div>
+                        <div class="form-group">
+                            <label><i class="fa-solid fa-lock"></i> CVV</label>
+                            <input type="text" id="cardCvv" placeholder="123" maxlength="4" autocomplete="cc-csc">
+                        </div>
+                    </div>
+
+                    <div class="modal-total">
+                        <span class="modal-total-label">Total due today</span>
+                        <span class="modal-total-amount" id="modalTotalAmount">₹200</span>
+                    </div>
+
+                    <button class="modal-submit" id="modalSubmitBtn" onclick="processPayment()">
+                        <i class="fa-solid fa-lock"></i> Pay & Activate
+                    </button>
+                    <div class="modal-secure">
+                        <i class="fa-solid fa-shield-halved"></i>
+                        Secured by 256-bit SSL encryption
+                    </div>
+                </div>
+            </div>
+
+            <!-- Success View -->
+            <div class="modal-success" id="modalSuccessView">
+                <div class="success-circle">
+                    <i class="fa-solid fa-check"></i>
+                </div>
+                <h3>You're all set!</h3>
+                <p id="successMessage">Your subscription is now active. Enjoy unlimited access to Nexus News Hub.</p>
+                <button class="btn-home" onclick="goHome()">
+                    <i class="fa-solid fa-house"></i> Go to Home
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>About Nexus News Hub</h3>
+                <p>Your trusted source for breaking news, analysis, and in-depth reporting from around the world.</p>
+            </div>
+            <div class="footer-section">
+                <h3>Plans</h3>
+                <ul>
+                    <li><a href="#">Free</a></li>
+                    <li><a href="#">Monthly – ₹200</a></li>
+                    <li><a href="#">Annual – ₹2,000</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Terms of Service</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Newsletter</h3>
+                <p>Subscribe to get the latest news delivered to your inbox.</p>
+                <div class="newsletter-form">
+                    <input type="email" placeholder="Your email">
+                    <button>Subscribe</button>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Nexus News Hub. All rights reserved. |
+                <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a>
+            </p>
+        </div>
+    </footer>
+
+    <script src="Frontend/Assets/js/subscription.js"></script>
+</body>
+</html>
