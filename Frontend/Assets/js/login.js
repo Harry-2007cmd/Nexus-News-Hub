@@ -41,65 +41,78 @@ function showMessage(msg, type, form) {
   setTimeout(() => div.remove(), 4000);
 }
 
-// Login
+// ── Login ────────────────────────────────────────────────────────────────────
 document.getElementById("loginForm").addEventListener("submit", async (e) => {
   e.preventDefault();
-  const form = e.target;
-  const email = document.getElementById("loginEmail").value.trim();
+  const form     = e.target;
+  const email    = document.getElementById("loginEmail").value.trim();
   const password = document.getElementById("loginPassword").value;
   const remember = document.getElementById("rememberMe").checked;
-  const btn = form.querySelector(".btn-primary");
+  const btn      = form.querySelector(".btn-primary");
 
   btn.disabled = true;
-  await new Promise(r => setTimeout(r, 1000));
+  btn.classList.add("loading");
+  await new Promise(r => setTimeout(r, 800));
 
   const users = JSON.parse(localStorage.getItem("users") || "[]");
-  const user = users.find(u => u.email === email && u.password === password);
+  const user  = users.find(u => u.email === email && u.password === password);
 
   if (user) {
+    // Persist session
     (remember ? localStorage : sessionStorage).setItem("currentUser", JSON.stringify(user));
     showMessage("Login successful! Redirecting...", "success", form);
-    setTimeout(() => window.location.href = "index.html", 1500);
+    setTimeout(() => window.location.href = "index.html", 1200);
   } else {
     showMessage("Invalid email or password.", "error", form);
     btn.disabled = false;
+    btn.classList.remove("loading");
   }
 });
 
-// Signup
+// ── Signup (auto-login after account creation) ───────────────────────────────
 document.getElementById("signupForm").addEventListener("submit", async (e) => {
   e.preventDefault();
-  const form = e.target;
+  const form     = e.target;
   const name     = document.getElementById("signupName").value.trim();
   const email    = document.getElementById("signupEmail").value.trim();
   const password = document.getElementById("signupPassword").value;
   const confirm  = document.getElementById("confirmPassword").value;
   const agreed   = document.getElementById("agreeTerms").checked;
+  const newsletter = document.getElementById("newsletter").checked;
   const btn      = form.querySelector(".btn-primary");
 
   if (password !== confirm) return showMessage("Passwords do not match.", "error", form);
-  if (!agreed) return showMessage("Please agree to the Terms of Service.", "error", form);
+  if (password.length < 8)  return showMessage("Password must be at least 8 characters.", "error", form);
+  if (!agreed)              return showMessage("Please agree to the Terms of Service.", "error", form);
 
   btn.disabled = true;
-  await new Promise(r => setTimeout(r, 1000));
+  btn.classList.add("loading");
+  await new Promise(r => setTimeout(r, 800));
 
   const users = JSON.parse(localStorage.getItem("users") || "[]");
   if (users.some(u => u.email === email)) {
     showMessage("An account with this email already exists.", "error", form);
-    return (btn.disabled = false);
+    btn.disabled = false;
+    btn.classList.remove("loading");
+    return;
   }
 
-  users.push({ id: Date.now(), name, email, password, createdAt: new Date().toISOString() });
+  // Save new user
+  const newUser = {
+    id: Date.now(),
+    name,
+    email,
+    password,
+    newsletter,
+    createdAt: new Date().toISOString()
+  };
+  users.push(newUser);
   localStorage.setItem("users", JSON.stringify(users));
-  showMessage("Account created! Please log in.", "success", form);
 
-  setTimeout(() => {
-    document.getElementById("signupBox").classList.add("hidden");
-    document.getElementById("loginBox").classList.remove("hidden");
-    document.getElementById("loginEmail").value = email;
-    form.reset();
-  }, 1500);
-  btn.disabled = false;
+  // ✅ Auto-login: store session and go straight to home
+  localStorage.setItem("currentUser", JSON.stringify(newUser));
+  showMessage("Account created! Logging you in...", "success", form);
+  setTimeout(() => window.location.href = "index.html", 1200);
 });
 
 // Social buttons (demo)
@@ -113,7 +126,7 @@ document.querySelectorAll(".btn-social").forEach(btn => {
 document.querySelector(".forgot-password").addEventListener("click", (e) => {
   e.preventDefault();
   const email = document.getElementById("loginEmail").value.trim();
-  const form = document.getElementById("loginForm");
+  const form  = document.getElementById("loginForm");
   showMessage(
     email ? `Reset link sent to ${email}` : "Enter your email first.",
     email ? "success" : "error",
