@@ -1,6 +1,5 @@
 // ===============================
 // ARTICLE PAGE - article.js
-// Reads article data passed via sessionStorage from main page
 // ===============================
 
 const PLACEHOLDER = "https://placehold.co/900x500/e5e5e5/aaa?text=No+Image";
@@ -66,23 +65,18 @@ function loadArticle() {
   stats.articles = (stats.articles || 0) + 1;
   localStorage.setItem("userStats", JSON.stringify(stats));
 
-  // Page title
   document.title = `${article.title || "Article"} - Nexus News Hub`;
 
-  // Category
   const category = capitalize(article.category?.[0] || article.source_id || "News");
   document.getElementById("articleCategory").textContent = category;
   document.getElementById("articleCategoryBreadcrumb").textContent = category;
 
-  // Title
   document.getElementById("articleTitle").textContent = article.title || "Untitled";
 
-  // Meta
   document.getElementById("articleSource").textContent = capitalize(article.source_id || "Unknown Source");
   document.getElementById("articleDate").textContent = `${formatDate(article.pubDate)} · ${timeAgo(article.pubDate)}`;
   document.getElementById("articleReadTime").textContent = estimateReadTime(article.description);
 
-  // Image
   const img = document.getElementById("articleImage");
   img.src = (article.image_url && article.image_url.startsWith("http"))
     ? article.image_url : PLACEHOLDER;
@@ -96,10 +90,8 @@ function loadArticle() {
     caption.style.display = "none";
   }
 
-  // Description / Lead
   document.getElementById("articleDescription").textContent = article.description || "";
 
-  // Full content (content field from API, or fallback)
   const contentEl = document.getElementById("articleContent");
   if (article.content && article.content !== article.description) {
     const paragraphs = article.content
@@ -112,11 +104,9 @@ function loadArticle() {
     contentEl.innerHTML = `<p>For the complete story, please visit the original source below.</p>`;
   }
 
-  // Source link
   const sourceLink = document.getElementById("articleSourceLink");
   sourceLink.href = article.link || "#";
 
-  // Keywords / Tags
   const tagsEl = document.getElementById("articleTags");
   const keywords = article.keywords || article.category || [];
   if (keywords.length) {
@@ -126,7 +116,6 @@ function loadArticle() {
       .join("");
   }
 
-  // Share buttons
   const pageUrl = encodeURIComponent(article.link || window.location.href);
   const pageTitle = encodeURIComponent(article.title || "");
   document.querySelector(".share-btn.facebook").href =
@@ -150,7 +139,7 @@ function loadArticle() {
 }
 
 // ===============================
-// LOAD RELATED NEWS FROM SESSION
+// LOAD RELATED NEWS
 // ===============================
 function loadRelated() {
   const raw = sessionStorage.getItem("allArticles");
@@ -161,7 +150,6 @@ function loadRelated() {
   const current = JSON.parse(currentRaw);
   const currentCategory = current.category?.[0] || "";
 
-  // Filter related: same categorgity or different articles, exclude current
   const related = all
     .filter(a => a.link !== current.link)
     .sort((a, b) => {
@@ -199,7 +187,7 @@ function loadRelated() {
 }
 
 // ===============================
-// THEME TOGGLE 
+// THEME TOGGLE
 // ===============================
 const themeToggle = document.getElementById("themeToggle");
 const html = document.documentElement;
@@ -219,39 +207,50 @@ themeToggle.addEventListener("click", () => {
 function updateNavForUser() {
   const userRaw = localStorage.getItem("currentUser") || sessionStorage.getItem("currentUser");
   const navRight = document.querySelector(".nav-right");
-  if (!navRight || !userRaw) return;
+  if (!navRight) return;
 
-  const user = JSON.parse(userRaw);
-  const initials = user.name
-    ? user.name.split(" ").map(n => n[0]).join("").toUpperCase().slice(0, 2)
-    : "U";
+  if (userRaw) {
+    const user = JSON.parse(userRaw);
+    const initials = user.name
+      ? user.name.split(" ").map(n => n[0]).join("").toUpperCase().slice(0, 2)
+      : "U";
 
-  navRight.querySelector(".btn-secondary")?.remove();
-  navRight.querySelector(".btn-primary")?.remove();
+    navRight.querySelector(".btn-secondary")?.remove();
+    navRight.querySelector(".btn-primary")?.remove();
 
-  const avatar = document.createElement("div");
-  avatar.className = "user-avatar";
-  avatar.innerHTML = `
-    <span class="avatar-initials">${initials}</span>
-    <div class="avatar-dropdown">
-      <div class="avatar-name">${user.name || "User"}</div>
-      <div class="avatar-email">${user.email || ""}</div>
-      <hr style="margin:8px 0;border-color:var(--border);">
-      <a href="profile.html" class="dropdown-item"><i class="fa-solid fa-user"></i> My Profile</a>
-      <a href="#" class="dropdown-item" id="logoutBtn"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
-    </div>
-  `;
-  navRight.appendChild(avatar);
+    // Subscribe button
+    const subBtn = document.createElement("button");
+    subBtn.className = "btn-primary";
+    subBtn.innerHTML = '<i class="fa-solid fa-crown" style="margin-right:5px;"></i> Subscribe';
+    subBtn.onclick = () => window.location.href = "subscription.html";
+    navRight.appendChild(subBtn);
 
-  avatar.addEventListener("click", (e) => { e.stopPropagation(); avatar.classList.toggle("open"); });
-  document.addEventListener("click", () => avatar.classList.remove("open"));
+    // Avatar dropdown
+    const avatar = document.createElement("div");
+    avatar.className = "user-avatar";
+    avatar.innerHTML = `
+      <span class="avatar-initials">${initials}</span>
+      <div class="avatar-dropdown">
+        <div class="avatar-name">${user.name || "User"}</div>
+        <div class="avatar-email">${user.email || ""}</div>
+        <hr style="margin:8px 0;border-color:var(--border);">
+        <a href="profile.html" class="dropdown-item"><i class="fa-solid fa-user"></i> My Profile</a>
+        <a href="subscription.html" class="dropdown-item"><i class="fa-solid fa-crown"></i> Subscription</a>
+        <a href="#" class="dropdown-item" id="logoutBtn"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
+      </div>
+    `;
+    navRight.appendChild(avatar);
 
-  document.getElementById("logoutBtn")?.addEventListener("click", (e) => {
-    e.preventDefault();
-    localStorage.removeItem("currentUser");
-    sessionStorage.removeItem("currentUser");
-    window.location.href = "index.html";
-  });
+    avatar.addEventListener("click", (e) => { e.stopPropagation(); avatar.classList.toggle("open"); });
+    document.addEventListener("click", () => avatar.classList.remove("open"));
+
+    document.getElementById("logoutBtn")?.addEventListener("click", (e) => {
+      e.preventDefault();
+      localStorage.removeItem("currentUser");
+      sessionStorage.removeItem("currentUser");
+      window.location.href = "index.html";
+    });
+  }
 }
 
 // ===============================

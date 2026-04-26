@@ -64,7 +64,6 @@ function openArticle(article) {
   sessionStorage.setItem("currentArticle", JSON.stringify(article));
   sessionStorage.setItem("allArticles",    JSON.stringify(allArticles));
 
-  // Track recently viewed
   const recent = JSON.parse(localStorage.getItem("recentArticles") || "[]");
   if (!recent.some(r => r.link === article.link)) {
     recent.unshift(article);
@@ -82,12 +81,10 @@ function openArticle(article) {
 // ===============================
 function initPageMeta() {
   document.title = `${meta.label} News - Nexus News Hub`;
-
   document.getElementById("catIcon").innerHTML       = `<i class="fa-solid ${meta.icon}"></i>`;
   document.getElementById("catHeroTitle").textContent = meta.label + " News";
   document.getElementById("catHeroSub").textContent   = meta.desc;
 
-  // Mark active category link in nav
   document.querySelectorAll(".category-link").forEach(link => {
     const href = link.getAttribute("href") || "";
     if (href.includes(`cat=${catKey}`)) link.classList.add("active");
@@ -192,7 +189,6 @@ function renderGrid(append = false) {
     displayedCount = 0;
   }
 
-  // Skip first article (used as top story) when not searching/sorting differently
   const startOffset = (!append && displayedCount === 0 && currentSort === "latest") ? 1 : 0;
   const slice = visibleArticles.slice(displayedCount + startOffset, displayedCount + startOffset + PAGE_SIZE);
   displayedCount += slice.length + (append ? 0 : startOffset);
@@ -250,7 +246,7 @@ function renderGrid(append = false) {
 // ===============================
 function updateLoadMore(total, shown) {
   const btn = document.getElementById("loadMoreBtn");
-  const hasMore = shown < total - 1; // -1 for top story offset
+  const hasMore = shown < total - 1;
   btn.style.display = hasMore ? "flex" : "none";
 }
 
@@ -273,11 +269,9 @@ document.querySelectorAll(".filter-btn").forEach(btn => {
     btn.classList.add("active");
     currentSort = btn.dataset.sort;
 
-    if (currentSort === "popular") {
-      visibleArticles = [...allArticles].sort(() => Math.random() - 0.5);
-    } else {
-      visibleArticles = [...allArticles];
-    }
+    visibleArticles = currentSort === "popular"
+      ? [...allArticles].sort(() => Math.random() - 0.5)
+      : [...allArticles];
     renderGrid(false);
   });
 });
@@ -290,15 +284,14 @@ document.getElementById("categorySearch").addEventListener("input", function () 
   clearTimeout(searchTimeout);
   searchTimeout = setTimeout(() => {
     const q = this.value.toLowerCase().trim();
-    if (!q) {
-      visibleArticles = [...allArticles];
-    } else {
-      visibleArticles = allArticles.filter(a =>
-        (a.title || "").toLowerCase().includes(q) ||
-        (a.description || "").toLowerCase().includes(q) ||
-        (a.source_id || "").toLowerCase().includes(q)
-      );
-    }
+    visibleArticles = q
+      ? allArticles.filter(a =>
+          (a.title || "").toLowerCase().includes(q) ||
+          (a.description || "").toLowerCase().includes(q) ||
+          (a.source_id || "").toLowerCase().includes(q)
+        )
+      : [...allArticles];
+
     document.getElementById("resultsCount").textContent =
       q ? `${visibleArticles.length} results for "${this.value}"` : `${allArticles.length} articles found`;
 
@@ -325,10 +318,21 @@ function updateNavForUser() {
   const userRaw = localStorage.getItem("currentUser") || sessionStorage.getItem("currentUser");
   const navRight = document.querySelector(".nav-right");
   if (!navRight || !userRaw) return;
+
   const user = JSON.parse(userRaw);
   const initials = user.name ? user.name.split(" ").map(n => n[0]).join("").toUpperCase().slice(0,2) : "U";
+
   navRight.querySelector(".btn-secondary")?.remove();
   navRight.querySelector(".btn-primary")?.remove();
+
+  // Subscribe button
+  const subBtn = document.createElement("button");
+  subBtn.className = "btn-primary";
+  subBtn.innerHTML = '<i class="fa-solid fa-crown" style="margin-right:5px;"></i> Subscribe';
+  subBtn.onclick = () => window.location.href = "subscription.html";
+  navRight.appendChild(subBtn);
+
+  // Avatar dropdown
   const avatar = document.createElement("div");
   avatar.className = "user-avatar";
   avatar.innerHTML = `
@@ -338,11 +342,14 @@ function updateNavForUser() {
       <div class="avatar-email">${user.email || ""}</div>
       <hr style="margin:8px 0;border-color:var(--border);">
       <a href="profile.html" class="dropdown-item"><i class="fa-solid fa-user"></i> My Profile</a>
+      <a href="subscription.html" class="dropdown-item"><i class="fa-solid fa-crown"></i> Subscription</a>
       <a href="#" class="dropdown-item" id="logoutBtn"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
     </div>`;
   navRight.appendChild(avatar);
+
   avatar.addEventListener("click", e => { e.stopPropagation(); avatar.classList.toggle("open"); });
   document.addEventListener("click", () => avatar.classList.remove("open"));
+
   document.getElementById("logoutBtn")?.addEventListener("click", e => {
     e.preventDefault();
     localStorage.removeItem("currentUser");

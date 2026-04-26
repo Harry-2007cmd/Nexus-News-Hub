@@ -183,7 +183,6 @@ function displayLatest(articles, append = false) {
     displayedCount = 0;
   }
 
-  // Skip first 4 (used in hero) only when showing all articles unfiltered
   const startOffset = (!append && displayedCount === 0 && articles === filteredArticles && !document.querySelector(".search-input")?.value.trim()) ? 4 : 0;
   const slice = articles.slice(displayedCount + startOffset, displayedCount + startOffset + PAGE_SIZE);
   displayedCount += slice.length + (append ? 0 : startOffset);
@@ -227,7 +226,6 @@ function displayLatest(articles, append = false) {
     card.style.cursor = "pointer";
     card.addEventListener("click", () => openArticle(article));
 
-    // Fade-in animation
     card.style.opacity = "0";
     card.style.transform = "translateY(16px)";
     newsGrid.appendChild(card);
@@ -247,7 +245,7 @@ function displayLatest(articles, append = false) {
 function updateLoadMoreBtn(articles, shown) {
   let btn = document.getElementById("loadMoreBtn");
   const total = (articles || filteredArticles).length;
-  const hasMore = shown < total - 4; // account for hero offset
+  const hasMore = shown < total - 4;
 
   if (hasMore) {
     if (!btn) {
@@ -293,7 +291,6 @@ document.querySelectorAll(".category-link").forEach(link => {
     document.querySelectorAll(".category-link").forEach(l => l.classList.remove("active"));
     link.classList.add("active");
 
-    // Clear search
     const si = document.querySelector(".search-input");
     if (si) si.value = "";
 
@@ -303,7 +300,7 @@ document.querySelectorAll(".category-link").forEach(link => {
 });
 
 // ===============================
-// SEARCH 
+// SEARCH
 // ===============================
 const searchInput = document.querySelector(".search-input");
 if (searchInput) {
@@ -327,9 +324,7 @@ if (searchInput) {
         (a.source_id || "").toLowerCase().includes(q)
       );
 
-      if (filteredArticles.length > 0) {
-        displayHero(filteredArticles);
-      }
+      if (filteredArticles.length > 0) displayHero(filteredArticles);
 
       newsGrid.innerHTML = "";
       displayedCount = 0;
@@ -344,7 +339,6 @@ if (searchInput) {
         return;
       }
 
-      // For search results show all articles (no hero offset)
       const slice = filteredArticles.slice(0, PAGE_SIZE);
       displayedCount = slice.length;
       slice.forEach(article => {
@@ -394,11 +388,19 @@ function updateNavForUser() {
     const initials = user.name
       ? user.name.split(" ").map(n => n[0]).join("").toUpperCase().slice(0, 2)
       : "U";
-    const loginBtn = navRight.querySelector(".btn-secondary");
-    const signupBtn = navRight.querySelector(".btn-primary");
-    if (loginBtn) loginBtn.remove();
-    if (signupBtn) signupBtn.remove();
 
+    // Remove login/signup buttons
+    navRight.querySelector(".btn-secondary")?.remove();
+    navRight.querySelector(".btn-primary")?.remove();
+
+    // Subscribe button
+    const subBtn = document.createElement("button");
+    subBtn.className = "btn-primary";
+    subBtn.innerHTML = '<i class="fa-solid fa-crown" style="margin-right:5px;"></i> Subscribe';
+    subBtn.onclick = () => window.location.href = "subscription.html";
+    navRight.appendChild(subBtn);
+
+    // Avatar dropdown
     const avatar = document.createElement("div");
     avatar.className = "user-avatar";
     avatar.innerHTML = `
@@ -408,6 +410,7 @@ function updateNavForUser() {
         <div class="avatar-email">${user.email || ""}</div>
         <hr style="margin:8px 0;border-color:var(--border);">
         <a href="profile.html" class="dropdown-item"><i class="fa-solid fa-user"></i> My Profile</a>
+        <a href="subscription.html" class="dropdown-item"><i class="fa-solid fa-crown"></i> Subscription</a>
         <a href="#" class="dropdown-item" id="logoutBtn"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
       </div>
     `;
