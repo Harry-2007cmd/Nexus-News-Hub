@@ -354,7 +354,7 @@ function updateNavForUser() {
     e.preventDefault();
     localStorage.removeItem("currentUser");
     sessionStorage.removeItem("currentUser");
-    window.location.reload();
+    window.location.href = "../index.html";
   });
 }
 

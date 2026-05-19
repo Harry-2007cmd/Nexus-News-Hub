@@ -75,7 +75,7 @@ function updateNavForUser() {
     e.preventDefault();
     localStorage.removeItem("currentUser");
     sessionStorage.removeItem("currentUser");
-    window.location.reload();
+    window.location.href = "../index.html";
   });
 }
 
@@ -151,7 +151,7 @@ function handleFree() {
     window.location.href = "login.html";
     return;
   }
-  window.location.href = "index.html";
+  window.location.href = "../index.html";
 }
 
 // ── Modal ─────────────────────────────────────────────────────────────────
@@ -301,7 +301,7 @@ function showSuccess(plan) {
 
 function goHome() {
   closeModal();
-  window.location.href = "index.html";
+  window.location.href = "../index.html";
 }
 
 // ── Inject keyframe styles ────────────────────────────────────────────────

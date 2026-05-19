@@ -235,5 +235,5 @@ function saveUser() {
 document.getElementById("logoutBtn").addEventListener("click", () => {
   localStorage.removeItem("currentUser");
   sessionStorage.removeItem("currentUser");
-  window.location.href = "index.html";
+  window.location.href = "../index.html";
 });

@@ -52,7 +52,7 @@ function capitalize(str) {
 function openArticle(article) {
   sessionStorage.setItem("currentArticle", JSON.stringify(article));
   sessionStorage.setItem("allArticles", JSON.stringify(allArticles));
-  window.location.href = "article.html";
+  window.location.href = "Frontend/article.html";
 }
 
 // ===============================
@@ -125,7 +125,7 @@ function displayTrending(articles) {
     const views = Math.floor(Math.random() * 10000 + 5000).toLocaleString();
     const li = document.createElement("li");
     li.innerHTML = `
-      <a href="article.html">
+      <a href="Frontend/article.html">
         <div>
           <div style="font-weight:700;font-family:Arial,sans-serif;font-size:0.88rem;color:var(--text-primary);line-height:1.4;margin-bottom:3px;">${article.title}</div>
           <div style="font-size:0.75rem;color:var(--text-muted);font-family:Arial,sans-serif;"><i class="fa-solid fa-fire" style="color:var(--primary);margin-right:4px;"></i>${views} views</div>
@@ -153,7 +153,7 @@ function displayHero(articles) {
   heroExcerpt.textContent = main.description || "";
   heroCategory.textContent = capitalize(main.category?.[0] || "Top News");
 
-  heroLink.href = "article.html";
+  heroLink.href = "Frontend/article.html";
   heroLink.onclick = (e) => { e.preventDefault(); openArticle(main); };
 
   secondaryNews.innerHTML = "";
@@ -295,7 +295,12 @@ document.querySelectorAll(".category-link").forEach(link => {
     if (si) si.value = "";
 
     const catParam = CATEGORY_MAP[label] || "";
-    fetchNews(catParam);
+    // If not Home, navigate to the category page
+    if (label !== "Home") {
+      window.location.href = `Frontend/category.html?cat=${catParam}`;
+    } else {
+      fetchNews("");
+    }
   });
 });
 
@@ -397,7 +402,7 @@ function updateNavForUser() {
     const subBtn = document.createElement("button");
     subBtn.className = "btn-primary";
     subBtn.innerHTML = '<i class="fa-solid fa-crown" style="margin-right:5px;"></i> Subscribe';
-    subBtn.onclick = () => window.location.href = "subscription.html";
+    subBtn.onclick = () => window.location.href = "Frontend/subscription.html";
     navRight.appendChild(subBtn);
 
     // Avatar dropdown
@@ -409,8 +414,8 @@ function updateNavForUser() {
         <div class="avatar-name">${user.name || "User"}</div>
         <div class="avatar-email">${user.email || ""}</div>
         <hr style="margin:8px 0;border-color:var(--border);">
-        <a href="profile.html" class="dropdown-item"><i class="fa-solid fa-user"></i> My Profile</a>
-        <a href="subscription.html" class="dropdown-item"><i class="fa-solid fa-crown"></i> Subscription</a>
+        <a href="Frontend/profile.html" class="dropdown-item"><i class="fa-solid fa-user"></i> My Profile</a>
+        <a href="Frontend/subscription.html" class="dropdown-item"><i class="fa-solid fa-crown"></i> Subscription</a>
         <a href="#" class="dropdown-item" id="logoutBtn"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
       </div>
     `;

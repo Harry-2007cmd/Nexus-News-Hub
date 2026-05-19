@@ -4,13 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nexus News Hub - Breaking News & Latest Updates</title>
-    <link rel = "StyleSheet" href="Assets/css/main.css">
+    <link rel="StyleSheet" href="Frontend/Assets/css/main.css">
     <script src="https://kit.fontawesome.com/1eda1e965c.js" crossorigin="anonymous"></script>
 </head>
 <body>
     
     <!--Navigation Bar --> 
-   
     <nav class="navbar">
         <div class="nav-container">
             <div class="nav-left">
@@ -37,21 +36,21 @@
                         <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
                     </svg>
                 </button>
-                <button class="btn-secondary" onclick="window.location.href='login.html'">Login</button>
-                <button class="btn-primary" onclick="window.location.href='login.html'">Sign Up</button>
+                <button class="btn-secondary" onclick="window.location.href='Frontend/login.html'">Login</button>
+                <button class="btn-primary" onclick="window.location.href='Frontend/login.html'">Sign Up</button>
         </div>
         </div>
 
          <!-- Category Navigation -->
         <div class="category-nav">
             <a href="index.html" class="category-link active">Home</a>
-            <a href="category.html?cat=politics" class="category-link">Politics</a>
-            <a href="category.html?cat=business" class="category-link">Business</a>
-            <a href="category.html?cat=technology" class="category-link">Technology</a>
-            <a href="category.html?cat=sports" class="category-link">Sports</a>
-            <a href="category.html?cat=entertainment" class="category-link">Entertainment</a>
-            <a href="category.html?cat=world" class="category-link">World</a>
-            <a href="category.html?cat=health" class="category-link">Health</a>
+            <a href="Frontend/category.html?cat=politics" class="category-link">Politics</a>
+            <a href="Frontend/category.html?cat=business" class="category-link">Business</a>
+            <a href="Frontend/category.html?cat=technology" class="category-link">Technology</a>
+            <a href="Frontend/category.html?cat=sports" class="category-link">Sports</a>
+            <a href="Frontend/category.html?cat=entertainment" class="category-link">Entertainment</a>
+            <a href="Frontend/category.html?cat=world" class="category-link">World</a>
+            <a href="Frontend/category.html?cat=health" class="category-link">Health</a>
         </div>
 
     </nav>
@@ -68,8 +67,8 @@
 
 
     <!-- Main Content Area -->
-     <div class = "main-container">
-          <!--Treading sidebar-->
+     <div class="main-container">
+          <!--Trending sidebar-->
           <aside class="trending-sidebar">
 
             <div class="trending-header">
@@ -116,7 +115,6 @@
           </aside>
 
           <!--Main content-->
-
           <main class="content-area">
             <!-- HERO SECTION -->
                 <a id="heroLink" class="card-link" href="#">
@@ -146,7 +144,7 @@
                 
      </div>
 
-         <!-- Footer -->
+    <!-- Footer -->
     <footer class="footer">
         <div class="footer-content">
             <div class="footer-section">
@@ -156,10 +154,10 @@
             <div class="footer-section">
                 <h3>Categories</h3>
                 <ul>
-                    <li><a href="#">Politics</a></li>
-                    <li><a href="#">Business</a></li>
-                    <li><a href="#">Technology</a></li>
-                    <li><a href="#">Sports</a></li>
+                    <li><a href="Frontend/category.html?cat=politics">Politics</a></li>
+                    <li><a href="Frontend/category.html?cat=business">Business</a></li>
+                    <li><a href="Frontend/category.html?cat=technology">Technology</a></li>
+                    <li><a href="Frontend/category.html?cat=sports">Sports</a></li>
                 </ul>
             </div>
             <div class="footer-section">
@@ -185,6 +183,6 @@
         </div>
     </footer>     
 
-<script src="Assets/js/main.js" ></script>
+<script src="Frontend/Assets/js/main.js"></script>
 </body>
 </html>

@@ -61,7 +61,7 @@ document.getElementById("loginForm").addEventListener("submit", async (e) => {
     // Persist session
     (remember ? localStorage : sessionStorage).setItem("currentUser", JSON.stringify(user));
     showMessage("Login successful! Redirecting...", "success", form);
-    setTimeout(() => window.location.href = "index.html", 1200);
+    setTimeout(() => window.location.href = "../index.html", 1200);
   } else {
     showMessage("Invalid email or password.", "error", form);
     btn.disabled = false;
@@ -72,14 +72,14 @@ document.getElementById("loginForm").addEventListener("submit", async (e) => {
 // ── Signup (auto-login after account creation) ───────────────────────────────
 document.getElementById("signupForm").addEventListener("submit", async (e) => {
   e.preventDefault();
-  const form     = e.target;
-  const name     = document.getElementById("signupName").value.trim();
-  const email    = document.getElementById("signupEmail").value.trim();
-  const password = document.getElementById("signupPassword").value;
-  const confirm  = document.getElementById("confirmPassword").value;
-  const agreed   = document.getElementById("agreeTerms").checked;
+  const form       = e.target;
+  const name       = document.getElementById("signupName").value.trim();
+  const email      = document.getElementById("signupEmail").value.trim();
+  const password   = document.getElementById("signupPassword").value;
+  const confirm    = document.getElementById("confirmPassword").value;
+  const agreed     = document.getElementById("agreeTerms").checked;
   const newsletter = document.getElementById("newsletter").checked;
-  const btn      = form.querySelector(".btn-primary");
+  const btn        = form.querySelector(".btn-primary");
 
   if (password !== confirm) return showMessage("Passwords do not match.", "error", form);
   if (password.length < 8)  return showMessage("Password must be at least 8 characters.", "error", form);
@@ -109,10 +109,10 @@ document.getElementById("signupForm").addEventListener("submit", async (e) => {
   users.push(newUser);
   localStorage.setItem("users", JSON.stringify(users));
 
-  // ✅ Auto-login: store session and go straight to home
+  // Auto-login: store session and go straight to home
   localStorage.setItem("currentUser", JSON.stringify(newUser));
   showMessage("Account created! Logging you in...", "success", form);
-  setTimeout(() => window.location.href = "index.html", 1200);
+  setTimeout(() => window.location.href = "../index.html", 1200);
 });
 
 // Social buttons (demo)

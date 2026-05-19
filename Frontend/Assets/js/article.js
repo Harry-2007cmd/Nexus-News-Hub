@@ -43,7 +43,7 @@ function loadArticle() {
     document.querySelector(".article-container").innerHTML = `
       <div class="article-loading">
         <p style="font-size:1.1rem; margin-bottom:12px;">Article not found.</p>
-        <button class="back-btn" onclick="window.location.href='index.html'">
+        <button class="back-btn" onclick="window.location.href='../index.html'">
           <i class="fa-solid fa-arrow-left"></i> Back to Home
         </button>
       </div>`;
@@ -248,7 +248,7 @@ function updateNavForUser() {
       e.preventDefault();
       localStorage.removeItem("currentUser");
       sessionStorage.removeItem("currentUser");
-      window.location.href = "index.html";
+      window.location.href = "../index.html";
     });
   }
 }
