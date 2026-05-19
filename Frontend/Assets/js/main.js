@@ -297,7 +297,7 @@ document.querySelectorAll(".category-link").forEach(link => {
     const catParam = CATEGORY_MAP[label] || "";
     // If not Home, navigate to the category page
     if (label !== "Home") {
-      window.location.href = `Frontend/category.html?cat=${catParam}`;
+      window.location.href = `Frontend/categories.html?cat=${catParam}`;
     } else {
       fetchNews("");
     }
