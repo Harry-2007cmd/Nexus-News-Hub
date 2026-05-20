@@ -2,6 +2,7 @@
 // CONFIG (newsdata.io)
 // ===============================
 const API_KEY = "pub_bff503765abd457d8f914d1be47d9207";
+const Backup_key = "pub_750c8de77642459a86514b62bc8453a4";
 const BASE_URL = `https://newsdata.io/api/1/news?apikey=${API_KEY}&country=in&language=en`;
 
 // ===============================
