@@ -97,7 +97,7 @@ Open the project in VS Code, right-click `Frontend/index.html`, and select **"Op
 
 **4. Open in browser**
 ```
-http://127.0.0.1:5502/Frontend/index.html
+https://nexus-news-hub-theta.vercel.app/
 ```
 
 ---
